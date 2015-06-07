@@ -33,10 +33,10 @@ $c_{ij}^t$ of a link $(i,j)$, namely discrete and continuous models.
 
 To represent the link travel time $c_{ij}^t$ with a continuous \textit{pdf}, a
 suitable function is needed. Recent studies suggest that in road networks, the link
-travel times are normally (e.g. \cite{SesSri10}) or gamma
-(e.g. \cite{ZocNieWuMah13}) distributed. To the best of our knowledge, no
+travel times are normally (e.g. \cite{Seshadri10}) or gamma
+(e.g. \cite{Zockaei13}) distributed. To the best of our knowledge, no
 approach exists, to compute the sum of several gamma distributed random
-variables. Thus only approximate sampling approaches \cite{ZocNieWuMah13} or approaches discretizing the distributions \cite{NieWu09} have been proposed so far for the case where link travel times are assumed to be gamma distributed. In the first case, no extension for the time-dependent and correlated setting
+variables. Thus only approximate sampling approaches \cite{Zockaei13} or approaches discretizing the distributions \cite{Nie09b} have been proposed so far for the case where link travel times are assumed to be gamma distributed. In the first case, no extension for the time-dependent and correlated setting
 exists and the latter case is covered by the discretized approach. For these
 reasons we decided not to explicitly include the gamma distribution in the
 present study. In the case of a normal distribution, the random variable
@@ -59,7 +59,7 @@ $c_{ij}$ reads
 where $L \phi$ is the maximal considered time horizon in the future.
 
 Let us note that besides the b-discrete discretization scheme other schemes
-\cite{NieWuDilJohNel12} such as the $\alpha$-discrete scheme (where the support
+\cite{Nie12} such as the $\alpha$-discrete scheme (where the support
 is divided such that each interval has the same probability mass $\epsilon$) or
 the adaptive discretization scheme (where starting from the b-discrete scheme,
 intervals are consolidated until each interval has a minimum probability mass of
@@ -168,7 +168,7 @@ times $h$ which correspond to all Tuesdays 9:00am in the last year. The travel
 time $c_{i,j}^h$ corresponding to last Tuesday 10:00pm might on the other hand
 not be a good choice for the prediction. How to choose a set $H'$ is very
 dependent on the characteristics of the underlying traffic network.
-More details can be found in \cite{PanDS12}.
+More details can be found in \cite{Pan12}.
 
 For the continuous representation of the link travel time, we assume normal
 distribution with the following parameters
@@ -192,7 +192,7 @@ For correlated discrete link travel times as processed in the methods
 described in Section \ref{sec:methods}, it is necessary to provide two link
 travel time distributions $F_{ij}^t(b, 0)$ (for the uncongested state) and $F_{ij}^t(b, 1)$ (for the congested state).
 Additionally, the conditional probabilities $\alpha^{uv}_{ij}$ have to be at
-hand. Since none of the recent studies \cite{WalZil02,FanKalMoo05}
+hand. Since none of the recent studies \cite{Waller02,Fan05}
 describe how to obtain these parameters, we propose a feasible
 approach. The basic idea is to define the two states of a link by the travel
 time itself. Thus we introduce a parameter $\kappa_{ij}$. A travel time
