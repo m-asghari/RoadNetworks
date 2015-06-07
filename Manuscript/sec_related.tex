@@ -1,0 +1,256 @@
+\section{Related Work}
+\label{sec:related}
+In this section we will review related work on the problem of computing reliability of routes.
+
+\subsection{Deterministic Link Travel Times}
+The problem of point-to-point fastest path computation in static road networks
+is extensively studied with many precomputation techniques proposed to speed-up
+the computation (e.g., \cite{sametcontainer,goldberg05}). These studies
+make the simplifying assumption that travel-times of the network edges are single constant deterministic values. As we discussed, in real-world road networks the edge travel-times are time-dependent with a degree of uncertainty, where the arrival-time on an edge determines the
+actual travel-time on it. Cooke and Halsey \cite{cooke66tdsp} first studied time-dependent fastest
+path probem (TDFP) considering the arrival times to edges. They solved the
+problem using Dynamic Programming in discrete time. In \cite{dreyfus69}, Dreyfus
+showed that TDFP problem can be solved by a generalization of Dijkstra's method as efficiently as for static fastest path problems.
+However, Halpern \cite{halpren77} proved that the generalization of Dijkstra's algorithm is only true for FIFO networks. The FIFO property in road networks ensures that
+vehicle-A starting at some node, always arrives at its destination before
+vehicle-B, taking the same route at a later time.
+
+In recent years, an increasing number of navigation companies (e.g., Navteq and
+Inrix) have started releasing their time-dependent travel-time information for
+road networks. With the availability of such datasets, the research community focused on
+efficient computation of time-dependent fastest paths and introduced
+precomputation techniques (e.g., \cite{Nannicini,timedependentsharc,
+timedependentcontraction,DemiryurekSSD11}). The main idea of these
+techniques can be grouped in two categories. The first group 
+(\cite{Nannicini,DemiryurekSSD11}) proposed  to solve
+TDFP with bidirectional A* with different precomputed heuristic functions. On
+the other hand, the second group
+(\cite{timedependentcontraction,timedependentsharc})  focused on a method that
+removes unimportant nodes from the graph without changing the fastest path distances between the remaining (more important) nodes.
+
+% While TDFP approaches yield more accurate paths than that of static algorithms,
+% they fall short to capture the inherit uncertainty of the edge travel-times.
+% This is because all of the existing time-dependent fastest path algorithms
+% model the road network with deterministic time-varying edge
+% weights. The travel-times are usually computed by averaging the
+% historical travel-times to assign a deterministic cost (i.e., travel-time)
+% for each time instance (e.g., for every 15 minutes). There also exists some
+% studies that combine the historical and real-time traffic information
+% (\cite{PanDS12}) to capture the uncertainty of travel-times and generate
+% more up-to-date travel-times. However, the travel-times are still deterministic
+% as they are assigned a single value based on the prediction of the short-term
+% impact of the real-time traffic.
+
+\subsection{Uncertain Link Travel Times}
+\label{subsec:ult}
+Uncertainty in databases has attracted a lot of attention from the research
+community in the last decade . Many approaches for managing
+\cite{AgrBenDasHayetal06,AntJanKocOlt07,JamXuWu08}, querying
+\cite{SolIlyCha07,LiSahDes09} and analysing \cite{ChuKaoHun07,ChaCheKaoNr06}
+these uncertain datasets have been proposed.
+Especially in the field of spatial \cite{CheXiaPra04,DaiYiuMam05} and
+spatio-temporal \cite{EmrKriMam12,NieZueEmr13} data, uncertainty was considered
+as an important issue due to uncertain sensor measurements or
+probabilistic estimations of unknown values. Although these plethora of works
+provide many efficient techniques to deal with the uncertainty, only a few works
+actually consider how to obtain this uncertainty in a way such that the outcome
+of these techniques is meaningful and evaluate the whole end-to-end pipeline of
+this process.
+
+Though there exists a large body of work on networks with certain link travel
+times, these approaches are not adaptable when the travel times become
+uncertain due to sensor failures or predictions of future states of the traffic
+network.
+
+The first work \cite{Fra69}  dealing with uncertainty in this context considers
+a graph with uncertain edge weights with arbitrary distribution. The particular
+interest of this work is to study the characteristics of the probability
+distribution describing the length of the shortest path between a source and a
+destination.
+The author considers the problem from a statistical point of view and no algorithm (besides
+a Monte-Carlo driven sampling approach) to compute this distribution is
+provided.
+The work concludes that (under certain assumptions) the length of the shortest
+path is approximately normally distributed. In the end the interesting problem of
+comparing two paths is presented. Since a comparison based on the expected
+length might not be satisfying the author proposes to compare the paths based on
+the probability not to be longer than a parameter $l$. An examplary query
+corresponding to this setting would be: \textit{``Which of two possible paths
+from my home to work is more likely to let me arrive before 10:00am''}. A
+solution is presented under the assumption that the length of a path is normally
+distributed.
+In contrast to the above work, recent studies have considered more
+sophisticated scenarios where the link travel times are not only uncertain but
+also time varying and correlated.
+
+\subsubsection{Time-Dependency}
+Time dependency of link travel times was recently studied in
+large scale traffic networks \cite{DemiryurekSSD11,PanDS12} without uncertainty.
+It has been shown that considering the predicted value of a link travel time at the arrival at
+that link rather than its value at start of the route vastly improves the accuracy of fastest route
+algorithms. One work impressively demonstrating this, is \cite{YuaZhe10} where
+the authors utilize historical taxi trajectories in order to learn the
+time-dependent travel times of a road network and show the superiority to
+routing services like Google or Bing Maps.
+
+Miller-Hooks and Mahmassani first considered stochastic,
+time-varying networks where link travel times are independent random variables
+with time dependent (discrete) probability distributions \cite{MilEliMah98}.
+They address the problem of finding the least possible time path in networks. Specifically, an
+algorithm is proposed for determining the least possible travel time from every node to the destination node, its corresponding path and the corresponding probability of
+occurrence of that travel time. A sample query would be: \textit{``Regardless
+of my starting time, provide me the fastest possible (under best conditions)
+route and its corresponding travel time probability from all nodes (intersections) to
+work''}. The resulting least possible time path from any starting point may
+however have a vanishingly small probability and thus not even be relevant to
+the user.
+
+The same authors later addressed the problem of least expected
+time (LET) paths under the same settings in \cite{MilMah00}. The problem is to
+determine the a priori least expected time paths with the associated expected time from all nodes to
+a given destination for each departure time interval
+in the period of interest. The sample query would thus slightly differ from the
+previous one:\textit{``Provide me the fastest route from all nodes
+(intersections) to work under average conditions when starting between 9:00am
+and 10:00am''}. In time-invariant stochastic networks this
+problem is trivial since it can be reduced to the static case with certain link
+travel times by providing each edge with its expected travel time and solving
+the shortest path problem using existing methods. In the time variant network
+setting however this problem is more complex and two algorithms based on
+label-correcting approaches are proposed. The first one provides an exact
+solution yielding a worst-case non-polynomial but average polynomial complexity
+whereas the second one is more efficient but provides only a lower bound of the
+expected travel time and no path information for the LET paths.
+
+In a different study, Nie and Wu \cite{NieWu09} proposed an algorithm for
+solving the shortest path problem with on-time arrival reliability (SPOTAR). The SPOTAR problem is to
+find the latest possible departure time and the associated route to attain a
+given probability of arriving at the destination at a specified arrival time or
+earlier. A query example would be: \textit{``What is the latest time I have to
+leave home and what path do I have to take to be at work at 10:00am or earlier
+with a probability of 90 \%''}. The authors model link travel times by independent
+discrete probability distributions and propose an extension to the time-dependent case.
+The problem is solved using an exact-label-correcting algorithm whose complexity
+is known to be non-deterministic polynomial.
+
+In \cite{CheLamLiSumYan13} the authors assume normally distributed link
+travel speeds. They note that some models assume that the travel time depends only
+on the arrival time and do not consider the possibility that the travel time might change while the vehicle is on the link. Such models suffer from the drawback that they are not
+statistical FIFO consistent. This problem is solved by relaxing this assumption and even allowing
+linear correlations between link travel times at consecutive times. In this
+case, however, there does not exist a closed form for the exact continuous
+distribution of the link travel time, thus a discrete model is proposed. The
+ultimate goal is to find the least expected time path (cf \cite{MilMah00})
+but between a given source and destination rather than all possible sources. Due
+to the problem setting, no probabilistic guarantees (reliability) can be assigned to the resulting path.
+
+
+\subsubsection{Correlation}
+Link travel times in traffic networks are generally dependent on each
+other. For example a traffic jam usually extends over several road segments
+and a high travel time on one segment usually implies a high travel time on the
+next segment. The consideration of correlation between link travel times of
+different edges is thus certainly relevant in traffic networks.
+
+In \cite{NieFan06} the authors propose an adaptive path finding strategy for the
+stochastic on-time arrival (SOTA). The main idea of SOTA is to provide
+the user the route with the highest probability to arrive at the
+destination before a given time threshold. A sample query for SOTA is:
+\textit{``Which route makes me arrive at work before 10:00am with the highest
+probability?''}. They use a discrete model to represent link travel times and consider a simple form of
+correlation between adjacent links in which the travel time of an edge is
+modeled by two probability mass functions that represent the normal and the
+congested state. The states of two adjacent links are then correlated by
+conditional probabilities. An algorithm yielding polynomial runtime complexity
+is proposed.
+Based on the uncertainty model of \cite{NieFan06}, the authors of
+\cite{HuaPei10} proposed an approximation algorithm for the probabilistic path
+travel time and heuristic approaches to find the best path(s). Though the study
+evaluated the approximation error of the inexact approach on a large
+real-world dataset they did not evaluate the validity of the exact outcome.
+
+ A similar study \cite{FanKalMoo05} presents an
+algorithm based on dynamic programming in order to return the path from a given source to a destination
+with the least expected travel time (LET). The link travel times are given by
+\textit{pmf}s and correlations are modeled similar to \cite{NieFan06}.
+
+Another work in this direction is \cite{SesSri10}, where the authors consider
+the problem of finding the optimal reliability path (ORP), which is equivalent
+to the SOTA problem. In their setting the travel time of an edge is normally
+distributed and travel times of different edges may correlate without changing
+over time. Under these assumptions, subpath optimality (each subpath of the
+result path is optimal regarding some criterion) of conventional approaches
+does not hold, and hence has to be adapted. Since the proposed algorithm is
+also based on a label correcting algorithm, the solution requires the
+enumeration of all possible exponential paths in the worst-case. Due to this
+characteristic, a fallback solution based on Monte-Carlo sampling is proposed to provide an
+approximate solution.
+
+\cite{ZocNieWuMah13} follows the same idea of sampling and provides an
+approximate solution using a Monte-Carlo based approach to the SPOTAR (cf
+\cite{NieWu09}) problem. Time-dependency is not considered. The main
+statement of the simulation based study is that even for the static case, not
+considering correlations between edge-weight yields considerably different and unpredictable
+results in real-world problems.
+
+\subsubsection{Time-Dependency and Correlation}
+Including both, time-dependency and correlation of link travel times for route
+optimization problems is generally a very complex undertaking and has only been
+considered in very recent studies.
+
+In \cite{DonLiVoVu12}, time-dependent road networks with normally distributed
+link travel times and local correlations between them based on two states
+(similar to \cite{NieFan06}) are considered. The goal here is to find the path
+with the lowest percent variation (PV) between a source and a destination, where
+PV is defined by the quotient of the standard deviation and the mean travel time of
+the path. The proposed algorithm yields an approximation of the exact result,
+but no runtime complexity or runtime experiments are provided.
+
+In \cite{NieWu09a}, the authors extend their previous work \cite{NieWu09} by
+introducing limited spatial correlations into the SPOTAR problem - referred to
+as reliable apriori shortest path problem (RASP). Specifically, the probability mass function of the traversal time on a link is assumed to be
+conditional on the state of that link. The states of a link have a Markovian
+property. Namely, the state of present link is dependent on the state of the
+link traversed right before arriving at its starting node, and independent of
+the links traversed prior to that. The probability distribution of link
+traversal times is also allowed to vary over time, which provides a mechanism to
+account for the dynamic network behavior such as congestion effects caused by
+rush hour traffic. Since the problem is shown to be non-deterministic
+polynomial, an approximation algorithm is proposed.
+
+Table \ref{tab:methods} summarizes and categorizes all aforementioned approaches
+for handling probabilistic link travel times.
+
+\begin{table}
+    \centering
+  \begin{tabular}{| l || l | c | c | c | c|}
+    \hline
+    Ref. & Method & Link model & Time-dep. & Correl. \\
+    \hline    \hline
+\cite{NieFan06} & SOTA & discrete  & no & yes\\ \hline
+\cite{SesSri10} & ORP & normal & no & yes\\ \hline
+\cite{NieWu09} & SPOTAR & discrete & yes & no\\ \hline
+\cite{NieWu09a} & RASP & discrete & yes & yes\\ \hline
+\cite{CheLamLiSumYan13} & LET & normal & no & yes\\ \hline
+\cite{ZocNieWuMah13} & SPOTAR & gamma & yes & yes\\ \hline
+\cite{DonLiVoVu12} & LET & normal & yes & yes\\ \hline
+  \end{tabular}
+  \caption{Models considered in this work}
+  \label{tab:methods}
+  \end{table}
+
+
+\subsection{Prediction of Link Travel Times}
+The prediction of link travel times is an essential part for the
+real time computation of the path travel time in a time-dependent
+traffic network. Thus, there exist a large body of work that solely
+concentrates on techniques solving this problem based on
+single link models \cite{PanDS12}, traffic incident models
+\cite{PanDemShaGup13}) or Bayesian network models \cite{SunZhaYu06}. Neither
+of these approaches does however incorporate the inherent uncertainty of the
+predicted values and does not allow for the use of the algorithms discussed in
+Section \ref{subsec:ult}. Recently Yang et al.\cite{YanGuoJen13} proposed to
+utilize spatio temporal hidden markkov models for this purpose. However the
+construction of the model is costly and the prediction
+process does not include the current situation in the network which makes the approach hardly
+applicable in the real-time setting considered in this work.

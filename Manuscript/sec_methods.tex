@@ -1,0 +1,217 @@
+\section{Reliability Computation}
+\label{sec:methods}
+In this section we will describe several approaches to compute the reliability
+of a given path in a network $G(V, E, S)$. We will start by discussing the
+simple case of a static network with uncertain independent link travel times and
+successively increases the complexity of the underlying graph by adding the
+attributes of time-dependency and correlation between link travel times.
+
+\subsection{Probabilistic Link Travel Times}
+\label{subsec:static}
+The most important design decision for supporting the computation of reliable
+paths is how to model the uncertainty of link travel times. 
+
+\textbf{Continuous Representation: }Under the assumption that link travel times
+are normally distributed and independent, the path travel time is also a random variable which is normally
+distributed with a mean and a variance, given by
+
+\begin{gather}
+\label{eq:normal}
+	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij} \text{ and } \sigma_{p}^2 =
+	\sum_{(i,j)\in p} \sigma_{ij}^2 
+\end{gather}
+
+where $(i,j)$ represent links on path $p$. The computational complexity is thus
+$O(N)$ where $N$ is the number of links on path $p$.
+
+% \subsection{Discrete Representation: }
+% \label{subsec:discrete}
+% Another approach is to represent the link travel times by discrete pmfs 
+% (probability mass functions). In this case the time domain has to be
+% discretized. The simplest discretization scheme, known as b-discrete divides the
+% time domain $T = \{t | t = n\cdot \phi \wedge n \in \NN \}$ evenly into
+% intervals of length $\phi$.
+% The corresponding probability mass function $F_{ij}$ of link travel time
+% $c_{ij}$ reads
+% 
+% \begin{equation}
+% 	F_{ij}(b) = \begin{cases}\int_b^{b+\phi}f_{ij}(w)dw \qquad b =
+% 	0,\phi,\ldots, (L-1)\phi\\
+% 	\int_b^{\infty}f_{ij}(w)dw \qquad b =
+% 	L \phi\\
+% 	0 \qquad otherwise
+% 	\end{cases} 
+% \end{equation}
+% 
+% where $L \phi$ is the maximal considered time horizon in the future. 
+
+\textbf{Discrete Representation: } Given the \textit{pmf} $F_{ij}$ of the link travel
+time for the link $(i,j)$ we can compute the \textit{pmf} $J_{sj}$ of the path travel time of path $p_{si}$ extended by the link
+$(i,j)$ by using the poisson-multinomial recurrence.
+
+\begin{equation}
+\label{eq:pmr}
+	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}(h)  , \forall b = 0, \phi,\ldots, L
+	\phi
+\end{equation}
+
+This equation can be computed efficiently by starting with the first link
+$(s,i)$ of the path $p_{sd}$ and its corresponding \textit{pmf} $F_{si}$. The adjacent
+link $(i,j)$ is considered next. The \textit{pmf} $J_{sj}$ is computed according to
+Equation \ref{eq:pmr} and the process repeats with the next adjacent link until
+node $d$ is reached. When implementing this, the algorithm obviously does not
+always have to consider each $b$ of the time horizon, but only all $b$'s corresponding to
+the minimum and the maximum possible time to traverse the path $p_{si}$ and link
+$(i,j)$. For each link on the path we have to perform $O(L^2)$
+computations, thus the overall complexity to compute $J_{sd}$ is $O(N \cdot
+L^2)$ where $N$ is the number of links on the path. 
+
+\subsection{Time-Dependency}
+\label{subsec:time}
+So far we assumed that the travel time $c_{ij}$ for a link is static, however,
+in a real world traffic network the link travel times differ drastically
+depending on time of the day and day of the week. Failing to integrate this
+knowledge yields a high degree of variance in the possible outcomes and thus an
+imprecise result which might not be useful for a user starting at a specific
+time. Thus we integrate this concept to stochastic time-dependent networks,
+where the link travel time $c_{ij}^t$ depends on the arrival time $t$ at node
+$i$. We discuss both, discrete and continuous modelling under time-dependency in the following.
+
+\textbf{Discrete Representation: } The work
+described in \cite{NieWu09} is closest to this setting, however, it
+focuses on a different problem setting and only briefly considers time-dependent
+link travel times. Thus the results can not be straightforwardly used.
+Therefore, some reformulations have to be made to fit with our problem setting.
+We generalize the technique described in [25]  to retrofit to our problem as follows.  
+Let $F_{ij}^t$ be the \textit{pmf} describing the link travel time of the link $(i,j)$ at
+time $t$ and $J_{si}$ be the path travel time for a path $p^{si}$ w.l.o.g. we
+assume that the route starts at $s$ at $t = t_c = 0$ then
+
+\begin{equation}
+\label{eq:pmr2}
+	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}^{b-h}(h)  , \forall b = 0,
+	\phi,\ldots, L
+	\phi
+\end{equation}
+
+Similar to Equation \ref{eq:pmr} we can build an incremental algorithm upon this
+equation until node $d$ is reached. The computational complexity stays the same
+than in the time-independent case $O(N \cdot L^2)$. An example for the
+computation for two consecutive street segments is given in the following:
+
+\ifthenelse{\boolean{TR}}{
+\begin{example}
+Consider the uncertain time-dependent link travel times for two edges $(s,i)$
+and $(i,j)$ in Table \ref{tab:example}. Link travel times for times
+which are not needed for the computation are omitted. The \textit{pmf} of the path
+travel time $\pi_{sj}^0$ is given by: 
+\begin{equation*}
+\begin{split}
+J_{sj}(3) &= F_{si}(3-2) \cdot F_{ij}^{3-2}(2)\\
+&= 0.2 \cdot 0.9 = 0.18\\
+J_{sj}(4) &= F_{si}(4-2) \cdot F_{ij}^{4-2}(2) + F_{si}(4-3) \cdot
+F_{ij}^{4-3}(3)\\ 
+&= 0.5 \cdot 0.8 + 0.2 \cdot 0.6  = 0.52\\
+J_{sj}(5) &= F_{si}(5-2) \cdot F_{ij}^{5-2}(2) + F_{si}(5-3) \cdot
+F_{ij}^{5-3}(3)\\ 
+&= 0.3 \cdot 0.2 + 0.5 \cdot 0.2  = 0.16\\
+J_{sj}(6) &= F_{si}(6-3) \cdot F_{ij}^{6-3}(3)\\
+&= 0.3 \cdot 0.7  = 0.21\\
+J_{sj}(7) &= F_{si}(7-4) \cdot F_{ij}^{7-4}(4)\\ 
+&= 0.3 \cdot 0.1  = 0.03
+\end{split}
+\end{equation*}
+\end{example}
+
+\begin{table}
+\begin{center}
+  \begin{tabular}{| l || c | c |}
+    \hline
+   t & $c_{si}^t$ & $c_{ij}^t$\\
+    \hline    \hline
+0 & 1 (0.2), 2 (0.5), 3 (0.3) & ---\\ \hline
+1 & --- & 2 (0.9), 3 (0.6)\\ \hline
+2 & --- & 2 (0.8), 3 (0.2)\\ \hline
+3 & --- & 2 (0.2), 3 (0.7), 4 (0.1)\\ \hline
+
+  \end{tabular}
+\end{center}
+\caption{Example pmfs of link travel times}
+\label{tab:example}
+\vspace{-0.5cm}
+\end{table}
+}{}
+
+\textbf{Continuous Representation: } For link travel times represented by
+time-dependent continuous distributions the closest approach is
+\cite{CheLamLiSumYan13}. However, as the authors pointed out, there is no closed
+form for the exact continuous distribution of the path travel time.
+
+
+\subsection{Correlated Link Travel Time}
+\label{subsec:cor}
+% For the continuous case under the assumption of normal distributed link travel
+% times \cite{SesSri10} provides a general solution. In this model any pair
+% $((i,j), (k,l))$ of edges in the network may be correlated and the corresponding
+% correlation $corr(c_{ij},c_{kl}) = \rho_{ij-kl} \in \boldsymbol\Sigma$ is stored
+% in a covariance matrix. 
+As discussed earlier, link travel times of edges are certainly
+correlated. Modelling this correlation is thus seen to be crucial in order to
+obtain meaningful results. As mentioned, this work proposed a discretization
+approach as a solution to this problem.
+Since this is equivalent to the above discrete case we will not discuss it
+separately.
+
+\textbf{Continuous Representation: } We manage the continuous representation by
+extending Eq. \ref{eq:normal} as follows:
+
+
+\begin{gather}
+\label{eq:normal2}
+	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij}, \\
+	\sigma_{p}^2 = \sum_{(i,j)\in p} \sigma_{ij}^2 +\sum_{(i,j)\neq(k,l)\in p}
+	\rho_{ij-kl}
+	\sigma_{ij} \sigma_{kl}
+\end{gather}
+
+Obviously this compact representation of the correlation of link travel times is
+only possible due to the assumption of normally distributed link travel times.
+Under this model, however, the complexity of the computation of the reliability
+of a path is $O(N^2)$.
+
+\textbf{Discrete Representation: } Following \cite{NieFan06}, we compute the
+path travel time accordingly.
+
+\begin{multline}
+\label{eq:pmr3}
+	J_{sj}(b,z) = \sum_{h=0}^b \sum_{r=0}^1 \alpha^{rz}_{ij} J_{si}(b-h,r)
+	F_{ij}(h,z)  , \\ \forall b = 0, \phi,\ldots, L
+	\phi, z = \{0, 1\}
+\end{multline}
+
+where $F_{ij}(h,z)$ is the \textit{pmf} representing the travel time $c_{ij}$ under
+normal ($z=0$) or congested ($z=1$) scenario. Including this correlation
+parameter increases the runtime complexity to $O((N \cdot L^2 \cdot |S|^2)$
+where $|S|$ is the number of considered states. However \cite{NieFan06} and
+other works argue that $|S|$ should be set to 2.
+
+\subsection{Time-Dependency and Correlations}
+\label{subsec:timcor}
+\vspace{0.2cm}
+
+\textbf{Continuous Representation: } To the best of our knowledge there does not
+exist any work that incorporates both, time dependency and correlation for
+continuous representation of link travel times.
+
+\textbf{Discrete Representation: } However, \cite{NieWu09a} offers a solution
+for the discrete representation  where the authors combine the ideas from \cite{NieWu09} and
+\cite{NieFan06}:
+\begin{multline}
+\label{eq:pmr4}
+	J_{sj}(b,z) = \sum_{h=0}^b \sum_{r=0}^1 \alpha^{rz}_{ij} J_{si}(b-h,r)
+	F_{ij}^{b-h}(h,z)  , \\ \forall b = 0, \phi,\ldots, L
+	\phi, z = \{0, 1\}
+\end{multline}
+
+The runtime complexity of this approach is equivalent to the time-independent
+case $O((N \cdot L^2 \cdot |S|^2)$.

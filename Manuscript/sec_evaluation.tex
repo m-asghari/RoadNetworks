@@ -1,0 +1,114 @@
+\section{Evaluating Probabilistic Predictions}
+\vspace{0.2cm}
+\label{sec:evaluate}
+Evaluating the accuracy of probabilistic results is a task that has been either
+over simplified or brushed under the carpet by many studies, focusing on the
+technical aspects of managing uncertain data. However, we argue that this part
+is crucial in order to justify the use of the uncertain aspects in the data,
+rather than performing the traditional approaches for data cleaning (e.g., using the expected prediction
+time). The evaluation of probabilistic prediction models for nominal values
+(e.g., travel time) is a non-trivial problem that will be reviewed in this
+section.
+
+The problem statement is as follows: Let A be a prediction model that is able
+to provide a probabilistic prediction $f_A^t$ of a value $v^t$ for a
+time $t$ in the future and $f_A^t$ be a \textit{pdf} assigning a probability to
+each possible value of $v^t$. Furthermore, let B be a prediction model which predicts
+$f_B^t$ for the same value $v^t$. Our goal is to determine which of the two
+models yields a better probabilistic prediction.
+
+Two statistical methods are considered to be relevant to this problem:
+goodness-of-fit tests \cite{Tay97} and scoring rules \cite{Bic07}. The
+goodness-of-fit test describes how well a statistical model fits a set of
+observations.
+Measurements of goodness-of-fit typically summarizes the discrepancy between
+observed values and the values expected under the model in question. An example is the
+Pearson's Chi-Square test \cite{Pea00}, which can be used as a goodness-of-fit
+test for a given \textit{pdf} $f$, which represents the theoretical behavior of
+a random variable $v$, and an observed frequency distribution (sampled values)
+from that variable. The test returns the probability of observing this frequency
+distribution (or a frequency distribution with a higher difference) under the
+assumption that the true distribution of $v$ follows $f$. Obviously this measure
+might be used in order to compare two models $f_A$ and $f_B$. The main
+difference of this setting is that the prediction is in our case time-dependent
+and changes additionally depending on the current situation of the traffic on
+an edge. Thus we are not able to draw a sufficiently large number of samples
+that may validate either one or the other model.
+Scoring models on the other hand are designed to evaluate probabilistic
+prediction models that are time dependent. Fields of application are weather
+forecasting or betting games. The most prominent representative is known as the
+Brier scoring rule \cite{Bri50}, which is described as follows. Let $f^t$ be a
+probabilistic prediction model (e.g., a probability mass function) for a
+variable, whose true value $v^t$ is one of several classes $C$ (e.g., ``tomorrow
+is sunny (75\%) or rainy (25\%)), then for one specific $t$ the Brier scoring
+rule returns:
+
+$$
+	S^{Brier}(f^t, v^t) = -\sum_{c \in C} (f^t(c) - I(v^t = c))^2
+$$
+where $f^t(c)$ represents the probability that is assigned to class $c$ and
+$I(v^t = c)$ returns 1 if the true value of $v^t$ is equals $c$.
+Intuitively, this scoring function gives a reward dependent on the
+probability that the probabilistic prediction model assigns to the true value.
+Summing up these rewards over several times $t \in T$ yields a score that is
+higher the better the prediction model $f^t$ predicts the true probability
+distribution of $v^t$ at each value of $t$:
+
+\vspace{0.1cm}
+
+$$
+	S^\Sigma (f, v) = \sum_{t \in T} S^*(f^t, v^t)
+$$
+
+\vspace{0.1cm}
+
+With this mechanism, it is possible to evaluate two probabilistic prediction
+models $f_A$ and $f_B$ by comparing their corresponding rewards.
+Scoring rules can also be used in our scenario, however they are originally
+designed for categorical values (e.g., sunny, cloudy, rainy) rather than ordinal
+values (e.g. travel time). Thus these scores are not sensitive to distance,
+meaning that no credit is given for assigning high probabilities to values near
+but not identical to the one materializing (e.g., the true outcome). For example
+a probabilistic prediction model A, that predicts 5 minutes (90\%) or 6
+minutes (10\%) and a model B that predicts 6 minutes (10\%) or 10 minutes
+(90\%), both obtain the same score when the true travel time is 6 minutes. However, we argue that this approach
+does not account for the ordinal nature of travel times since a true travel time
+of 6 minutes is rather close to the highly probable 5 minutes of model A and a
+good scoring rules should thus favor model A over B. For this reason we propose
+to use the continuous ranked probability score (CRPS) which is defined as
+follows \cite{Her00}:
+
+\vspace{0.1cm}
+
+\begin{equation}
+CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
+\geq v^t) dx
+\end{equation}
+
+\vspace{0.1cm}
+
+CRPS thus expresses some kind of distance between the probabilistic forecast
+$f^t$ and truth $v^t$. Another very useful property of CRPS is that it can be computed in
+linear time (in the number of possible outcomes) in the case when $f^t$ is given
+by a \textit{pmf} and has a closed form for the case where $f^t$ is given by a
+normal distribution $\mathcal{N}$ with parameters $\mu$ and $\sigma$ \cite{GneRaf07}:
+
+\vspace{0.1cm}
+
+\begin{multline}
+CRPS(\mathcal{N}(\mu,\sigma), v^t) = \sigma \left[ 2\varphi\left(\frac{x -
+\mu}{\sigma}\right) - \frac{1}{\sqrt{\pi}} + \right. \\ \left.\frac{x -
+\mu}{\sigma}\left(2 \Phi\left(\frac{x - \mu}{\sigma}\right) - 1 \right) \right]
+\end{multline}
+
+\vspace{0.2cm}
+
+where $\varphi$ and $\Phi$ denote the probability density function and the
+cumulative distribution function of a standard Gaussian variable. One advantage
+of the CRPS is that it reduces to the mean absolute error (MAE) if the forecast
+is deterministic. In practice, this makes it possible to compare an
+ensemble forecast with a deterministic forecast of the same variable in a
+consistent fashion. Since for the experimental evaluation we discretize the time
+to 1 second (i.e., $\phi$ = 1 sec) this means that the CRPS score can be
+interpreted as the mean absolute error of the predicted travel time in seconds.
+

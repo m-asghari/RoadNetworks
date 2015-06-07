@@ -1,0 +1,156 @@
+\documentclass[]{sig-alternate}
+\usepackage{graphicx}
+\usepackage{times}
+%\usepackage[T1]{fontenc} 
+%\usepackage{tgtermes} 
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{epsfig}
+%\usepackage{microtype}
+%\usepackage[iso]{umlaute}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{bbm}
+\usepackage{subfigure}
+\usepackage{ifthen}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{color}
+\usepackage{marginnote}
+%\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{paralist}
+\usepackage{tabularx}
+\usepackage{ifthen}
+\usepackage[justification=centering]{caption}
+
+\newcommand{\DB}{\ensuremath{\mathcal{D}}}
+\newcommand{\db}{\ensuremath{\mathcal{D}}} %the database
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\statevec}{\ensuremath{\vec{s}} }
+\newcommand{\query}{\ensuremath{q} } %the query object
+\newcommand{\loc}{\ensuremath{x} } %a single location
+\newcommand{\sd}{\ensuremath{\mathcal{S}}} %spatial domain
+\newcommand{\td}{\ensuremath{\mathcal{T}}} %time domain
+\newcommand{\tint}{\ensuremath{t} }
+\newcommand{\dbobj}{\ensuremath{o} }
+\newcommand{\vardbobj}{\ensuremath{g}}
+\newcommand{\vart}{\ensuremath{h}}
+\newcommand{\tm}{\ensuremath{M}} %transitionmatrix
+\newcommand{\probm}{\ensuremath{J}}
+\newcommand{\pw}{\ensuremath{\bullet}} %piecewise multiplication
+\newcommand{\mm}{\ensuremath{\cdot}} %matrix multiplication
+\newcommand{\tpoint}[1]{\ensuremath{\mathbb{#1}} }
+\newcommand{\plusequal}{\ensuremath{{ + \atop =}}}
+\newcommand{\obs}{\ensuremath{ob}}
+\newcommand{\CP}[1]{{\color{red}#1}}
+\newcommand{\TODO}[1]{{\bfseries\color{red}TODO: #1}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+
+\graphicspath{.}
+\newboolean{TR}
+\setboolean{TR}{true}
+\renewcommand{\textfraction}{0.00}
+\renewcommand{\topfraction}{1.0}
+\renewcommand{\bottomfraction}{1.0}
+\setcounter{totalnumber}{100}
+\setcounter{bottomnumber}{100}
+\setcounter{topnumber}{100}
+%\linespread{0.94}
+
+\title{On Computing and Evaluating the Reliability of a Route in
+Uncertain Time-Dependent Road Networks}
+
+\author{Double Blind Submission}
+
+%
+% \author{{Tobias Emrich, Ugur Demiryurek, Mohammad Asghari, Cyrus Shahabi}
+%  \vspace{1.6mm}\\
+%   \fontsize{10}{10}\selectfont\rmfamily\itshape
+%  $~^{*}$Integrated Media Systems Center, University of Southern California\\
+%  \fontsize{9}{9}\selectfont\ttfamily\upshape
+%  \{emrich, demiryurek, masghari, shahabi\}@usc.edu
+%   \vspace{-0.5cm}
+%  }
+
+%
+\begin{document}
+
+\maketitle
+
+%
+
+\begin{abstract}
+% Finding the shortest path between two nodes in a graph is a well studied
+% problem due to its manifold applications. In a real world application like
+% routing in a road-network finding the fastest (shortest time) path is
+% complicated by two factors. First, the cost (travel time) of the edges may
+% change over time, since traffic conditions change even while the car to be routed
+% already started the tour. Second, the cost of an edge is usually not known
+% for the (near-)future but can only be estimated. This estimation brings the
+% notion of uncertainty to road-networks. Recently, many studies consider
+% variations of the shortest path problem under consideration of this uncertainty and
+% provide techniques to solve these problems when the uncertain parameters are
+% provided. However, these studies neither provide insights on how to obtain these
+% parameters, nor how the results reflect reality in a real world application.
+% This work aims at filling this gap by considering the problem of assigning
+% probabilistic cost to a given path. We provide solutions for the
+% probabilistic estimation of link travel times, categorize existing works, 
+% describe methods for probabilistic path travel time computation, and design
+% measures to compare the developed approaches. This work is thus fundamental in
+% nature and provides a basis for further research in this direction.
+
+Due to the availability of large historical and real-time traffic data, car
+navigation systems are becoming more and more advanced in predicting the travel
+time for various routes and finding the fastest route from a source to a
+destination given a start time.  The most advanced of these systems predict the
+travel time of the edges, given past traffic patterns observed on those edges,
+in order to find the best route. However, the best route is not necessarily the
+most reliable route, i.e., the route with the least variation in possible travel times.  The most reliable
+route is desirable when traveling with a deadline, e.g., to reach a flight at
+the airport or to arrive on time for an important meeting.  In this paper, we
+show that in order to find the most reliable route, one needs to predict the
+probability distribution of travel times for a route, which would in turn
+require the estimation of travel time probability distribution for each and
+every edge, given an edge-entrance-time.  We address several challenges in
+making these predictions and subsequently their aggregations to calculate the
+probabilistic travel time of various routes. Our final challenge is
+to evaluate the result of competing approaches, which is difficult because the
+reported travel time is not a single value but a probabilistic distribution highly
+depending on the trip start time.  We thus propose a statistical test that
+enables us to evaluate these outcomes.
+
+\end{abstract}
+%\vspace{-1em}
+\input{sec_introduction}
+
+\input{sec_problemdef}
+
+\input{sec_related}
+
+\input{sec_parameter}
+
+\input{sec_methods}
+
+\input{sec_evaluation}
+
+\input{sec_experiments}
+\input{sec_experiments2}
+\input{sec_conclusion}
+
+\begin{scriptsize}
+%\begin{footnotesize}
+\bibliographystyle{abbrv}
+\bibliography{abbrev,literature}
+\end{scriptsize}
+%\end{footnotesize}
+%\input{tab_notations}
+
+\end{document}
