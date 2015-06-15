@@ -111,21 +111,7 @@ Due to the availability of large historical and real-time traffic data, car
 navigation systems are becoming more and more advanced in predicting the travel
 time for various routes and finding the fastest route from a source to a
 destination given a start time.  The most advanced of these systems predict the
-travel time of the edges, given past traffic patterns observed on those edges,
-in order to find the best route. However, the best route is not necessarily the
-most reliable route, i.e., the route with the least variation in possible travel times.  The most reliable
-route is desirable when traveling with a deadline, e.g., to reach a flight at
-the airport or to arrive on time for an important meeting.  In this paper, we
-show that in order to find the most reliable route, one needs to predict the
-probability distribution of travel times for a route, which would in turn
-require the estimation of travel time probability distribution for each and
-every edge, given an edge-entrance-time.  We address several challenges in
-making these predictions and subsequently their aggregations to calculate the
-probabilistic travel time of various routes. Our final challenge is
-to evaluate the result of competing approaches, which is difficult because the
-reported travel time is not a single value but a probabilistic distribution highly
-depending on the trip start time.  We thus propose a statistical test that
-enables us to evaluate these outcomes.
+travel time of the routes, given past traffic patterns in order to find the best route. However, the best route is not necessarily the most reliable route, i.e., the route with the least variation in possible travel times.  The most reliable route is desirable when traveling with a deadline, e.g., to reach a flight at the airport or to arrive on time for an important meeting.  To find the most reliable route, one needs to predict the probability distribution of travel times for that route. In order to determine the probability distribution of travel times on a route, the first step is to estimate travel time probability distributions for each and every edge, given an edge-entrance-time. In this paper we address the problem of finding these edge travel time distributions. To the best of our knowledge there hasn't been any study on how to compute probability distributions for links in road networks. We show how this step can affect the accuracy of the travel time distribution over the entire route. Our final challenge is to evaluate the result of different approaches, which is difficult because the reported travel time is not a single value but a probabilistic distribution highly depending on the trip start time.  We thus propose a statistical test that enables us to evaluate these outcomes.
 
 \end{abstract}
 %\vspace{-1em}
