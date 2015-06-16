@@ -1,24 +1,7 @@
 \vspace{-0.4cm}
 \section{Introduction}
 
-Navigation systems have changed the way we drive and in particular affected how
-we plan our trips. Nowadays, they are not only used to find the fastest
-route in an unknown area but also to react to current events such traffic jams
-and accidents on an everyday route. The latter became possible due to the
-availability of real-time traffic data, amongst others, from road sensors, GPS
-transmissions from vehicles and reporting tools for accidents. The most recent
-navigation systems (e.g., \cite{Pan13}) even go one step further and
-use the collected historic data to build traffic models in order to predict the future traffic. In
-conjunction with the real-time information the ultimate goal is to provide a faster
-route and better estimation of the expected travel time to the user. A
-main observation to be made here is that, since in these systems a prediction
-component is involved, the outcome (i.e., the estimated time for a route and
-thus the fastest route) can never be trusted with certainty but is
-obviously subject to variation. Following this thought the fastest route is not
-necessarily the most reliable route, i.e., the route with the least variation in
-possible travel times. Reliability of a route is particularly important to users
-when a deadline, such as a flight departure or an important meeting, has to be
-met. 
+Navigation systems have changed the way we drive and in particular affected how we plan our trips. Nowadays, they are not only used to find the shortest route in an unknown area but also to react to current events such traffic jams and accidents on an compute the fastest route. The latter became possible due to the availability of real-time traffic data gathered from road sensors, GPS transmissions from vehicles and reporting tools for accidents. The most recent navigation systems (e.g., \cite{Pan13}) even go one step further and use the collected historic data to build traffic models in order to predict the future traffic. In conjunction with the real-time information, the ultimate goal is to provide a faster route and better estimation of the expected travel time to the user. Since a prediction model is involved in these systems, a main observation to be made is that the outcome, i.e., the estimated time for a route and thus the fastest route, can never be trusted with certainty and is subject to variation. Consequently, the fastest route is not necessarily the most reliable route, i.e., the route with the least variation in possible travel times. Reliability of a route is particularly important to users when a deadline, such as a flight departure or an important meeting, has to be met. 
 
 % Shortest path problem in directed weighted graph is one of the most fundamental
 % optimization problems. The most popular and widely used application of shortest
@@ -49,21 +32,7 @@ met.
 % methodology gives away a wealth of information that can be
 % utilized \cite{Sarma08}.
 
-To illustrate, consider the example in Figure \ref{fig:motivation1}, where
-estimated total travel times of two paths are given. Based on these expected
-travel times (as returned by traditional approaches), route A is clearly
-the one to be preferred. However, this result ignores uncertain nature of the
-traffic prediction and only feigns certainty. Let us now consider Figure \ref{fig:motivation2}, where the travel times for
-both routes are taking the uncertainty of the prediction into account, i.e., the
-travel times are given by a probability density function (\textit{pdf}).
-Continuing with our example in Figure \ref{fig:motivation}, let's assume that the user has only 60  minutes to reach
-the destination in order to be on time. The probability that the user is at the
-destination in at most 60 minutes, is the sum of probabilities for times
-smaller or equal to 60 minutes. Under this consideration the user has a
-probability of 89\% of reaching his destination in time when choosing route A
-(implying that he will be late in one out of nine times), and a 99.2\%
-probability when choosing route B. Furthermore, if the user wants to achieve the
-same level of confidence using route A, he has to start 10 minutes earlier.
+To illustrate, consider the example in \cref{fig:motivation1}, where estimated total travel times for two routes with the same source and destination are given. Based on the \textit{expected} travel times, route A is better choice. However, this result ignores the uncertain nature of traffic prediction. On the other hand, in \cref{fig:motivation2}, travel times for same two routes are given with some level of uncertainty, i.e., the travel times are given by a probability density function (\textit{pdf}). Continuing with our example in \cref{fig:motivation}, let us assume that the user has only 60 minutes to reach the destination in order to be on time. The probability that the user is at the destination in at most 60 minutes, is the sum of probabilities of travel times smaller or equal to 60 minutes. In the example in \cref{fig:motivation2}, the user has a chance of 99.2\% to reach his destination on time when choosing route B, whereas choosing route A gives him only an 89\% chance to be on time. Furthermore, if the user wants to achieve the same level of confidence using route A, he has to start 10 minutes earlier.
 
 % \begin{figure}[h]
 %     \centering
@@ -87,56 +56,22 @@ same level of confidence using route A, he has to start 10 minutes earlier.
     \vspace{-0.5cm}
 \end{figure}
 
-The above example shows that similar to other applications
-\cite{Sarma08}, explicitly handling the uncertainty is better than ignoring it.
-Correspondingly, we believe that taking the uncertainty of the travel time into account will
-enable next-generation route planning applications by extending path queries to
-probabilistic path queries, allowing for queries such as:  \textit{What are the
-paths from my hotel to the airport whose travel time is at most 40 minutes with a probability of at least
-95\%?}. 
+The example in \cref{fig:motivation} shows that similar to other applications \cite{Sarma08}, explicitly handling the uncertainty is better than ignoring it. Correspondingly, we believe that taking the uncertainty of the travel time into account will enable next-generation route planning applications by extending path queries to probabilistic path queries, allowing for queries such as:  \textit{What are the paths from my hotel to the airport whose travel times are at most 40 minutes with a probability of at least 95\%?}. 
 
 % Recently, some studies have considered variations of the shortest-path
 % problem under consideration of uncertainty (cf Section \ref{sec:related}) in
 % the travel time. These studies reveal a plethora of useful scenarios and queries
 % which can be enriched by confidence when taking this uncertainty into account.
 
-With this goal in mind, in this work, we consider the problem of
-computing the \textit{pdf} of the travel time for one given path. This
-\textit{pdf} associates each possible travel time with the corresponding
-probability that the vehicle will need this time for completing the route.
-Specifically, we will make the following contributions:
+With this goal in mind, in this work, we consider the problem of computing the \textit{pdf} of the travel time for one given path. This \textit{pdf} associates each possible travel time with the corresponding probability that the vehicle will need this time for completing the route. Specifically, we will make the following contributions:
 
 \begin{enumerate}
-  \item \label{item:1} It turns out that all existing approaches considering uncertainty in traffic
-networks make the simplifying assumption that the probabilistic link travel
-times (\textit{pltts}), i.e., the predicted time for each road segment, are
-given. However, existing techniques on predicting link travel times provide a
-single value estimation only or are not compatible with existing techniques for
-computing the probabilistic link travel time of a path. Thus, there is a huge
-lack in taking the uncertainty of predictions into account and estimating not
-only accurate \textit{pltt} estimations but also possible correlations between them. We
-will fill this gap by providing techniques that yield \textit{pltts} by taking historic
-as well as real-time information into account.
-  \item \label{item:2} Subsequently we focus on approaches for computing the
-  probabilistic path travel times based on \textit{pltts}. After reviewing and categorizing the existing studies
- considering uncertainty in networks, we identify three basic characteristics
- (representation, time-dependency and correlation) and extract or adapt
- methods for all possible combinations of these characteristics for the ultimate
- goal of a fair and insightful comparison.
-  \item The evaluation  of a probabilistic prediction is a daunting task.
-  Neither expected distance measures nor goodness-of-fit methods nor primitive scoring
-  functions are applicable. So far no evaluation of the accuracy for the
-  methods in item \ref{item:2} has been performed. We propose adequate solutions to the evaluation problem and compare
-  the accuracy of both the techniques in items \ref{item:1} and \ref{item:2} on
-  a large real-world data set. Our results provide deep insights on the effect
-  and functionality of all sub-modules.
+\item \label{item:1} It turns out that all existing approaches considering uncertainty in traffic networks make the simplifying assumption that the probabilistic link travel times (\textit{pltts}), i.e., the predicted time for each road segment, are given. However, existing techniques on predicting link travel times provide a single value estimation only or are not compatible with existing techniques for computing the probabilistic link travel time of a path. Thus, there is a huge lack in taking the uncertainty of predictions into account and estimating not only accurate \textit{pltt} estimations but also possible correlations between them. We will fill this gap by providing techniques that yield \textit{pltts} by taking historic as well as real-time information into account.
+\item \label{item:2} Subsequently we focus on approaches for computing the probabilistic path travel times based on \textit{pltts}. After reviewing and categorizing the existing studies considering uncertainty in networks, we identify three basic characteristics (representation, time-dependency and correlation) and extract or adapt methods for all possible combinations of these characteristics for the ultimate goal of a fair and insightful comparison.
+\item The evaluation  of a probabilistic prediction is a daunting task. Neither expected distance measures nor goodness-of-fit methods nor primitive scoring functions are applicable. So far no evaluation of the accuracy for the methods in item \ref{item:2} has been performed. We propose adequate solutions to the evaluation problem and compare the accuracy of both the techniques in items \ref{item:1} and \ref{item:2} on a large real-world data set. Our results provide deep insights on the effect and functionality of all sub-modules.
 \end{enumerate}
 
-For the ultimate goal of providing this pipeline we avail ourselves of
-techniques from database, transportation, weather prediction and statistics
-research. One main question that this study will thus address is the
-usefulness and validity of the consideration of uncertainty for route 
-planning applications.
+For the ultimate goal of providing this pipeline we avail ourselves of techniques from database, transportation, weather prediction and statistics research. One main question that this study will thus address is the usefulness and validity of the consideration of uncertainty for route planning applications.
 % 
 % \begin{itemize}
 %   \item We review and categorize existing work for shortest path algorithms on
