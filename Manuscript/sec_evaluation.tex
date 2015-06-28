@@ -18,12 +18,12 @@ $f_B^t$ for the same value $v^t$. Our goal is to determine which of the two
 models yields a better probabilistic prediction.
 
 Two statistical methods are considered to be relevant to this problem:
-goodness-of-fit tests \cite{Tay97} and scoring rules \cite{Bic07}. The
+goodness-of-fit tests \cite{Taylor97} and scoring rules \cite{Bickel07}. The
 goodness-of-fit test describes how well a statistical model fits a set of
 observations.
 Measurements of goodness-of-fit typically summarizes the discrepancy between
 observed values and the values expected under the model in question. An example is the
-Pearson's Chi-Square test \cite{Pea00}, which can be used as a goodness-of-fit
+Pearson's Chi-Square test \cite{Pearson00}, which can be used as a goodness-of-fit
 test for a given \textit{pdf} $f$, which represents the theoretical behavior of
 a random variable $v$, and an observed frequency distribution (sampled values)
 from that variable. The test returns the probability of observing this frequency
@@ -37,7 +37,7 @@ that may validate either one or the other model.
 Scoring models on the other hand are designed to evaluate probabilistic
 prediction models that are time dependent. Fields of application are weather
 forecasting or betting games. The most prominent representative is known as the
-Brier scoring rule \cite{Bri50}, which is described as follows. Let $f^t$ be a
+Brier scoring rule \cite{Brier50}, which is described as follows. Let $f^t$ be a
 probabilistic prediction model (e.g., a probability mass function) for a
 variable, whose true value $v^t$ is one of several classes $C$ (e.g., ``tomorrow
 is sunny (75\%) or rainy (25\%)), then for one specific $t$ the Brier scoring
@@ -76,7 +76,7 @@ does not account for the ordinal nature of travel times since a true travel time
 of 6 minutes is rather close to the highly probable 5 minutes of model A and a
 good scoring rules should thus favor model A over B. For this reason we propose
 to use the continuous ranked probability score (CRPS) which is defined as
-follows \cite{Her00}:
+follows \cite{Hersbach00}:
 
 \vspace{0.1cm}
 
@@ -91,7 +91,7 @@ CRPS thus expresses some kind of distance between the probabilistic forecast
 $f^t$ and truth $v^t$. Another very useful property of CRPS is that it can be computed in
 linear time (in the number of possible outcomes) in the case when $f^t$ is given
 by a \textit{pmf} and has a closed form for the case where $f^t$ is given by a
-normal distribution $\mathcal{N}$ with parameters $\mu$ and $\sigma$ \cite{GneRaf07}:
+normal distribution $\mathcal{N}$ with parameters $\mu$ and $\sigma$ \cite{Gneiting04}:
 
 \vspace{0.1cm}
 

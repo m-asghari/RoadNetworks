@@ -17,8 +17,6 @@
 \usepackage{algorithm}
 \usepackage{color}
 \usepackage{marginnote}
-%\usepackage{amsthm}
-\usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{paralist}
 \usepackage{tabularx}
@@ -48,6 +46,7 @@
 \newcommand{\CP}[1]{{\color{red}#1}}
 \newcommand{\TODO}[1]{{\bfseries\color{red}TODO: #1}}
 
+\usepackage[capitalise]{cleveref}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
@@ -65,20 +64,18 @@
 \setcounter{topnumber}{100}
 %\linespread{0.94}
 
-\title{On Computing and Evaluating the Reliability of a Route in
-Uncertain Time-Dependent Road Networks}
+\title{Probabilistic computation of link travel times in dynamic road networks}
 
-\author{Double Blind Submission}
+%\author{Double Blind Submission}
 
-%
-% \author{{Tobias Emrich, Ugur Demiryurek, Mohammad Asghari, Cyrus Shahabi}
-%  \vspace{1.6mm}\\
-%   \fontsize{10}{10}\selectfont\rmfamily\itshape
-%  $~^{*}$Integrated Media Systems Center, University of Southern California\\
-%  \fontsize{9}{9}\selectfont\ttfamily\upshape
-%  \{emrich, demiryurek, masghari, shahabi\}@usc.edu
-%   \vspace{-0.5cm}
-%  }
+\author{{Tobias Emrich, Mohammad Asghari, Ugur Demiryurek, Cyrus Shahabi}
+  \vspace{1.6mm}\\
+  \fontsize{10}{10}\selectfont\rmfamily\itshape
+  $~^{*}$Integrated Media Systems Center, University of Southern California\\
+  \fontsize{9}{9}\selectfont\ttfamily\upshape
+  \{emrich, masghari, demiryurek, shahabi\}@usc.edu
+  \vspace{-0.5cm}
+}
 
 %
 \begin{document}
@@ -107,25 +104,7 @@ Uncertain Time-Dependent Road Networks}
 % measures to compare the developed approaches. This work is thus fundamental in
 % nature and provides a basis for further research in this direction.
 
-Due to the availability of large historical and real-time traffic data, car
-navigation systems are becoming more and more advanced in predicting the travel
-time for various routes and finding the fastest route from a source to a
-destination given a start time.  The most advanced of these systems predict the
-travel time of the edges, given past traffic patterns observed on those edges,
-in order to find the best route. However, the best route is not necessarily the
-most reliable route, i.e., the route with the least variation in possible travel times.  The most reliable
-route is desirable when traveling with a deadline, e.g., to reach a flight at
-the airport or to arrive on time for an important meeting.  In this paper, we
-show that in order to find the most reliable route, one needs to predict the
-probability distribution of travel times for a route, which would in turn
-require the estimation of travel time probability distribution for each and
-every edge, given an edge-entrance-time.  We address several challenges in
-making these predictions and subsequently their aggregations to calculate the
-probabilistic travel time of various routes. Our final challenge is
-to evaluate the result of competing approaches, which is difficult because the
-reported travel time is not a single value but a probabilistic distribution highly
-depending on the trip start time.  We thus propose a statistical test that
-enables us to evaluate these outcomes.
+Due to the availability of large historical and real-time traffic data, car navigation systems are becoming more and more advanced in predicting the travel time for various routes and finding the fastest route from a source to a destination given a start time.  The most advanced of these systems predict the travel time of the routes, given past traffic patterns in order to find the best route. However, the best route is not necessarily the most reliable route, i.e., the route with the least variation in possible travel times. The most reliable route is desirable when traveling with a deadline, e.g., to reach a flight at the airport or to arrive on time for an important meeting.  To find the most reliable route, one needs to predict the probability distribution of travel times for that route. This in turn requires the estimation of travel time probability distributions for each and every edge, given an edge-entrance-time. In this paper we address the problem of computing these edge travel time distributions. To the best of our knowledge there has not been any study on how to compute probability distributions for edges in road networks. We show how this first step can affect the accuracy of the travel time distribution over the entire route. Our final challenge is to evaluate the result of different approaches in computing these travel time distributions, which is difficult because the reported travel time is not a single value but a probabilistic distribution highly depending on the trip start time.  We thus propose a statistical test that enables us to evaluate these outcomes.
 
 \end{abstract}
 %\vspace{-1em}
@@ -147,8 +126,8 @@ enables us to evaluate these outcomes.
 
 \begin{scriptsize}
 %\begin{footnotesize}
-\bibliographystyle{abbrv}
-\bibliography{abbrev,literature}
+\bibliographystyle{IEEEtran}
+\bibliography{roadnetworks}
 \end{scriptsize}
 %\end{footnotesize}
 %\input{tab_notations}

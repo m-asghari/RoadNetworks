@@ -78,7 +78,7 @@ where the link travel time $c_{ij}^t$ depends on the arrival time $t$ at node
 $i$. We discuss both, discrete and continuous modelling under time-dependency in the following.
 
 \textbf{Discrete Representation: } The work
-described in \cite{NieWu09} is closest to this setting, however, it
+described in \cite{Nie09b} is closest to this setting, however, it
 focuses on a different problem setting and only briefly considers time-dependent
 link travel times. Thus the results can not be straightforwardly used.
 Therefore, some reformulations have to be made to fit with our problem setting.
@@ -144,7 +144,7 @@ J_{sj}(7) &= F_{si}(7-4) \cdot F_{ij}^{7-4}(4)\\
 
 \textbf{Continuous Representation: } For link travel times represented by
 time-dependent continuous distributions the closest approach is
-\cite{CheLamLiSumYan13}. However, as the authors pointed out, there is no closed
+\cite{Bi-Yu13}. However, as the authors pointed out, there is no closed
 form for the exact continuous distribution of the path travel time.
 
 
@@ -179,7 +179,7 @@ only possible due to the assumption of normally distributed link travel times.
 Under this model, however, the complexity of the computation of the reliability
 of a path is $O(N^2)$.
 
-\textbf{Discrete Representation: } Following \cite{NieFan06}, we compute the
+\textbf{Discrete Representation: } Following \cite{Nie06}, we compute the
 path travel time accordingly.
 
 \begin{multline}
@@ -192,7 +192,7 @@ path travel time accordingly.
 where $F_{ij}(h,z)$ is the \textit{pmf} representing the travel time $c_{ij}$ under
 normal ($z=0$) or congested ($z=1$) scenario. Including this correlation
 parameter increases the runtime complexity to $O((N \cdot L^2 \cdot |S|^2)$
-where $|S|$ is the number of considered states. However \cite{NieFan06} and
+where $|S|$ is the number of considered states. However \cite{Nie06} and
 other works argue that $|S|$ should be set to 2.
 
 \subsection{Time-Dependency and Correlations}
@@ -203,9 +203,9 @@ other works argue that $|S|$ should be set to 2.
 exist any work that incorporates both, time dependency and correlation for
 continuous representation of link travel times.
 
-\textbf{Discrete Representation: } However, \cite{NieWu09a} offers a solution
-for the discrete representation  where the authors combine the ideas from \cite{NieWu09} and
-\cite{NieFan06}:
+\textbf{Discrete Representation: } However, \cite{Nie09a} offers a solution
+for the discrete representation  where the authors combine the ideas from \cite{Nie09b} and
+\cite{Nie06}:
 \begin{multline}
 \label{eq:pmr4}
 	J_{sj}(b,z) = \sum_{h=0}^b \sum_{r=0}^1 \alpha^{rz}_{ij} J_{si}(b-h,r)
