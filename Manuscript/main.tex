@@ -16,12 +16,12 @@
 \usepackage{url}
 \usepackage{algorithm}
 \usepackage{color}
-\usepackage{marginnote}
+%\usepackage{marginnote}
 \usepackage{algorithmic}
 \usepackage{paralist}
 \usepackage{tabularx}
-\usepackage{ifthen}
 \usepackage[justification=centering]{caption}
+\usepackage[capitalise]{cleveref}
 
 \newcommand{\DB}{\ensuremath{\mathcal{D}}}
 \newcommand{\db}{\ensuremath{\mathcal{D}}} %the database
@@ -46,7 +46,7 @@
 \newcommand{\CP}[1]{{\color{red}#1}}
 \newcommand{\TODO}[1]{{\bfseries\color{red}TODO: #1}}
 
-\usepackage[capitalise]{cleveref}
+
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
@@ -62,66 +62,35 @@
 \setcounter{totalnumber}{100}
 \setcounter{bottomnumber}{100}
 \setcounter{topnumber}{100}
-%\linespread{0.94}
 
-\title{Probabilistic computation of link travel times in dynamic road networks}
+\title{Probabilistic estimation of link travel times in dynamic road networks}
 
-%\author{Double Blind Submission}
-
-\author{{Tobias Emrich, Mohammad Asghari, Ugur Demiryurek, Cyrus Shahabi}
+\author{{Mohammad Asghari*, Tobias Emrich*, Ugur Demiryurek, Cyrus Shahabi}
   \vspace{1.6mm}\\
   \fontsize{10}{10}\selectfont\rmfamily\itshape
   $~^{*}$Integrated Media Systems Center, University of Southern California\\
   \fontsize{9}{9}\selectfont\ttfamily\upshape
-  \{emrich, masghari, demiryurek, shahabi\}@usc.edu
-  \vspace{-0.5cm}
+  \{masghari, emrich, demiryurek, shahabi\}@usc.edu
 }
 
-%
+
 \begin{document}
 
 \maketitle
 
-%
-
 \begin{abstract}
-% Finding the shortest path between two nodes in a graph is a well studied
-% problem due to its manifold applications. In a real world application like
-% routing in a road-network finding the fastest (shortest time) path is
-% complicated by two factors. First, the cost (travel time) of the edges may
-% change over time, since traffic conditions change even while the car to be routed
-% already started the tour. Second, the cost of an edge is usually not known
-% for the (near-)future but can only be estimated. This estimation brings the
-% notion of uncertainty to road-networks. Recently, many studies consider
-% variations of the shortest path problem under consideration of this uncertainty and
-% provide techniques to solve these problems when the uncertain parameters are
-% provided. However, these studies neither provide insights on how to obtain these
-% parameters, nor how the results reflect reality in a real world application.
-% This work aims at filling this gap by considering the problem of assigning
-% probabilistic cost to a given path. We provide solutions for the
-% probabilistic estimation of link travel times, categorize existing works, 
-% describe methods for probabilistic path travel time computation, and design
-% measures to compare the developed approaches. This work is thus fundamental in
-% nature and provides a basis for further research in this direction.
 
-Due to the availability of large historical and real-time traffic data, car navigation systems are becoming more and more advanced in predicting the travel time for various routes and finding the fastest route from a source to a destination given a start time.  The most advanced of these systems predict the travel time of the routes, given past traffic patterns in order to find the best route. However, the best route is not necessarily the most reliable route, i.e., the route with the least variation in possible travel times. The most reliable route is desirable when traveling with a deadline, e.g., to reach a flight at the airport or to arrive on time for an important meeting.  To find the most reliable route, one needs to predict the probability distribution of travel times for that route. This in turn requires the estimation of travel time probability distributions for each and every edge, given an edge-entrance-time. In this paper we address the problem of computing these edge travel time distributions. To the best of our knowledge there has not been any study on how to compute probability distributions for edges in road networks. We show how this first step can affect the accuracy of the travel time distribution over the entire route. Our final challenge is to evaluate the result of different approaches in computing these travel time distributions, which is difficult because the reported travel time is not a single value but a probabilistic distribution highly depending on the trip start time.  We thus propose a statistical test that enables us to evaluate these outcomes.
+Due to the availability of large historical and real-time traffic data, car navigation systems are becoming more and more advanced in predicting the travel time for various routes and finding the fastest route from a source to a destination given a start time.  The most advanced of these systems predict the travel time of the routes, given past traffic patterns in order to find the best route. However, the best route is not necessarily the most reliable route, i.e., the route with the least variation in possible travel times. The most reliable route is desirable when travelling with a deadline, e.g., to reach a flight at the airport or to arrive on time for an important meeting.  To find the most reliable route, one needs to predict the probability distribution of travel times for that route. This in turn requires the estimation of travel time probability distributions for each and every edge, given an edge-entrance-time. In this paper we address the problem of computing these edge travel time distributions. To the best of our knowledge there has not been any study on how to compute probability distributions for edges in road networks. We show how this first step can affect the accuracy of the travel time distribution over the entire route. Our final challenge is to evaluate the result of different approaches in computing these travel time distributions, which is difficult because the reported travel time is not a single value but a probabilistic distribution highly depending on the trip start time.  We thus propose a statistical test that enables us to evaluate these outcomes.
 
 \end{abstract}
-%\vspace{-1em}
 \input{sec_introduction}
-
 \input{sec_problemdef}
-
-\input{sec_related}
-
 \input{sec_parameter}
-
 \input{sec_methods}
-
 \input{sec_evaluation}
-
 \input{sec_experiments}
 \input{sec_experiments2}
+\input{sec_related}
 \input{sec_conclusion}
 
 \begin{scriptsize}
@@ -130,6 +99,5 @@ Due to the availability of large historical and real-time traffic data, car navi
 \bibliography{roadnetworks}
 \end{scriptsize}
 %\end{footnotesize}
-%\input{tab_notations}
 
 \end{document}
