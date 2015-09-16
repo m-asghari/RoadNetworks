@@ -1,3 +1,4 @@
+\vspace{-0.1in}
 \subsection{Route Reliability Computation}
 In the following experiments, we apply the techniques for computing
 \textit{pltts} to the approaches discussed in \cref{sec:methods}. The first goal
@@ -55,10 +56,20 @@ In \cref{fig:path_comp} we put the results of applying the SH approach (\cref{su
 
 As an additional comparison partner we included an approach that is used in current route planing systems, named \textit{Baseline}. \textit{Baseline} uses the situation at the \textit{query time} and computes the path travel time without prediction based on the currently available deterministic travel times. The outcome will consequently be a non-probabilistic value as well. The CRPS method allows us to directly compare this approach to the probabilistic counterparts, since it converges to the mean error in the case of certain predictions (i.e., the CRPS can be interpreted as the difference of the prediction and the true value in seconds). The results show that under all settings the probabilistic approaches are superior to the \textit{Baseline} approach which once more justifies the use of probabilistic models in this application.
 
+In order to give the readers a better understanding of how different the travel times computed by each method in \cref{fig:path_comp} are with the actual travel time, in addition to CRPS, we also compute the \textit{Expected Value Difference (EVD)} for all methods in \cref{fig:path_comp}. To compute the EVD, we build the route pdf as we did before and instead of computing the CRPS score between the pdf and the actual time, we take the delta of the pdf's expected value and the actual travel time. These results are illustrated in \cref{fig:path_comp_ev}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = 0.9\columnwidth]{figures/Approaches_All_EVD.png}
+	\caption{EVD for probabilistic path computation}\label{fig:path_comp_ev}
+\end{figure}
+
+We can see a similar pattern in \cref{fig:path_comp_ev} as we saw in \cref{fig:path_comp} with regard to how different approaches compare to each other. The difference between the two charts, is that the EVD does not take into account the variance of the route pdf.
+
 \begin{figure}
     \centering
-    \includegraphics[width = 0.75\columnwidth]{figures/Runtime.png}
+    \includegraphics[width = 0.6\columnwidth]{figures/Runtime.png}
     \caption{Runtimes}\label{fig:runtimes}
 \end{figure}
 
-Lastly, we evaluated the runtime of all path computation methods discussed in Section \ref{sec:methods}. Runtimes are broken into link travel time prediction and path computation in Figure \ref{fig:runtimes}. Generally, the continuous approaches perform much better due to the analytical nature which yields a much better runtime complexity. As expected, the more complexity we add to the approaches based on a discrete representation, the more costly in terms of computation they become. Link travel time prediction and path computation contribute rather equivalent portions to the runtime in all approaches.
+Lastly, we evaluated the runtime of all path computation methods discussed in Section \ref{sec:methods}. Runtimes are broken into link travel time prediction and path computation in Figure \ref{fig:runtimes}. Generally, the continuous approaches perform much better due to the analytical nature which yields a much better runtime complexity. As expected, the more complexity we add to the approaches based on a discrete representation, the more costly in terms of computation they become.

@@ -63,6 +63,10 @@
 \setcounter{bottomnumber}{100}
 \setcounter{topnumber}{100}
 
+\conferenceinfo{ACM SIGSPATIAL}{November 03-06, 2015, Bellevue, WA, USA}
+\CopyrightYear{2015}
+\crdata{ISBN 978-1-4503-3967-4/15/11}
+
 \title{Probabilistic estimation of link travel times in dynamic road networks}
 
 \author{{Mohammad Asghari*, Tobias Emrich*, Ugur Demiryurek, Cyrus Shahabi}
@@ -81,8 +85,17 @@
 \begin{abstract}
 
 Due to the availability of large historical and real-time traffic data, car navigation systems are becoming more and more advanced in predicting the travel time for various routes and finding the fastest route from a source to a destination given a start time.  The most advanced of these systems predict the travel time of the routes, given past traffic patterns in order to find the best route. However, the best route is not necessarily the most reliable route, i.e., the route with the least variation in possible travel times. The most reliable route is desirable when traveling with a deadline, e.g., to reach a flight at the airport or to arrive on time for an important meeting.  To find the most reliable route, one needs to predict the probability distribution of travel times for that route. This in turn requires the estimation of travel time probability distributions for each and every edge, given an edge-entrance-time. In this paper we address the problem of computing these edge travel time distributions. To the best of our knowledge there has not been any study on how to compute probability distributions for edges in road networks. We show how this first step can affect the accuracy of the travel time distribution over the entire route. Our final challenge is to evaluate the result of different approaches in computing these travel time distributions, which is difficult because the reported travel time is not a single value but a probabilistic distribution highly depending on the trip start time.  We thus propose a statistical test that enables us to evaluate these outcomes.
-
 \end{abstract}
+\vspace{-0.15in}
+\section*{Categories and Subject Descriptors}
+\vspace{-0.025in}
+H.2.8 [\textbf{Database Management}]: Database Applications-\textit{Spatial databases and GIS}; H.3.4 [\textbf{Information Storage and Retrieval}]: Systems and Software-\textit{Question-answering (fact retrieval) systems}
+
+\vspace{-0.1in}
+\section*{Keywords}
+\vspace{-0.025in}
+Probabilistic travel times, route reliability, dynamic road networks
+
 \input{sec_introduction}
 \input{sec_problemdef}
 \input{sec_parameter}
@@ -93,11 +106,15 @@ Due to the availability of large historical and real-time traffic data, car navi
 \input{sec_related}
 \input{sec_conclusion}
 
+\vspace{-0.1in}
+\section*{Acknowledgement}
+This research has been funded in part by NSF grant IIS-1115153, Caltrans, the USC Integrated Media Systems Center (IMSC), and unrestricted cash gifts from Google, Northrop Grumman, Microsoft, and Oracle. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of any of the sponsors such as the National Science Foundation.
+
 \begin{scriptsize}
 %\begin{footnotesize}
 \bibliographystyle{IEEEtran}
 \bibliography{roadnetworks}
-\end{scriptsize}
 %\end{footnotesize}
+\end{scriptsize}
 
 \end{document}

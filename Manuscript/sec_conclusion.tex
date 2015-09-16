@@ -1,28 +1,5 @@
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
-In this work we studied the problem of assigning reliability or confidence
-values to the estimated travel time of a path in road networks. We showed
-that in order to achieve this goal, a whole pipeline of methods has to be
-present. We developed three novel methods to obtain probabilistic link
-travel times for each link in the network, using historical and
-current traffic observations. We presented several methods for summing up
-the travel times of each link on a given path under different models. We also
-introduced a method for evaluating probabilistic link and path travel time
-estimations. This technique made it for the first time possible to compare the
-existing approaches and the developed link travel time estimation methods
-against each other in terms of accuracy.
+In this work we studied the problem of assigning reliability or confidence values to the estimated travel time of a path in road networks. We showed that in order to achieve this goal, a whole pipeline of methods has to be present. We developed three novel methods to obtain probabilistic link travel times for each link in the network, using historical and current traffic observations. We presented several methods for summing up the travel times of each link on a given path under different models. We also introduced a method for evaluating probabilistic link and path travel time estimations. This technique made it for the first time possible to compare the existing approaches and the developed link travel time estimation methods against each other in terms of accuracy.
 
-The results presented in this paper leave room for improvement and further
-investigation. In the current methods, we treated all weekdays as equivalent,
-but our observations showed that there is a difference that should be
-analyzed and taken into account (e.g. traffic is usually worse on monday
-mornings than on other days due to out-of-town commuters). Another important
-point for further investigation is the notion of correlation. In following
-studies we want to analyse the influence of time-dependent correlations and the
-introduction of more possible states of a link. Last, the focus of this work was
-mainly on the accuracy comparison of different approaches and thus we assumed
-all necessary data to be present in main-memory. However, in a larger setting
-this may not be possible and the prediction has to run efficient for the data
-to be present in secondary memory database. In this case, we envision
-summarization data structures that allow for efficient prediction, based on the
-current situation.
+The results presented in this paper leave room for improvement and further investigation. In the current study, we only consider traffic data from the L.A. metropolitan area. Some of the parameters we compute in our experiments (e.g., the road network forgets the traffic from 1 hour ago) may end up having different values on road networks in other parts of the globe. It would be interesting to investigate whether such parameters have the same values on other road networks as well and if not what may cause the difference. In addition, a follow up study on the efficiency of calculating/storing/evaluating pltts (either via pre-processing or real-time updates) and directly applying them within industrial-grade route-planning algorithms would be of significant practical value in this domain.
