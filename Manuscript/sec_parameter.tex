@@ -1,7 +1,7 @@
 \section{Probabilistic Link Travel Times}
 \label{sec:lttestimation} 
-The prediction of an event is usually tainted with uncertainty. Therefore, when predicting link travel times it is not possible to produce an accurate prediction, since there are too many influencing factors like road conditions, accidents, weather, time of the day, day of the week or season. The methods we propose, produce a probabilistic prediction which includes all the effects that have been observed before (historic data) and are influencing the traffic flow right now (current data). For example if a street segment has often been the place of an accident (e.g., every other day between 9.00am and 10.00am) then the historical data will capture this effect and assign a high probability (e.g., 50\%) to the prediction that the travel time on that segment will be higher than usual. In this section we will develop three approaches to estimate probabilistic link travel times and correlations between them.
-
+The prediction of an event is usually tainted with uncertainty. Therefore, when predicting link travel times it is not possible to produce an accurate prediction, since there are too many influencing factors like road conditions, accidents, weather, time of the day, day of the week or season. The methods we propose, produce a probabilistic prediction which includes all the effects that have been observed before (historic data) and are influencing the traffic flow right now (current situation). For example if a street segment has often been the place of an accident (e.g., every other day between 9.00am and 10.00am) then the historical data will capture this effect and assign a high probability (e.g., 50\%) to the prediction that the travel time on that segment will be higher than usual. In this section we will develop three techniques to estimate probabilistic link travel times and correlations between them.
+%
 Before we continue, we need to introduce and explain a few concepts that will be used throughout this section. \textit{Start time} $(t_s)$, is the time for which we want to predict the travel time. For example, if we want to know how long it will take to travel from point $A$ to point $B$ if we leave at 8:00am, then the \textit{start time} will be 8:00am. \textit{Query time} $(t_q)$, is the time at which we are making the prediction. For example, if the current time is 7:00am and we want to know how long it will take to travel from point $A$ to point $B$ if we leave at 8:00am, then the \textit{query time} will be 7:00am. As it was seen in this example, \textit{start time} and \textit{query time} necessarily are not the same. We call the difference between the two the \textit{prediction time} $(t_p)$.
 
 \textbf{Probabilistic Link Travel Times: } The probabilistic link travel time of a link $(i,j)$ at time $t$, $c_{ij}^t$, can be represented with two models; discrete or continuous.
@@ -51,7 +51,7 @@ For continuous representation of the link travel time, we assume normal distribu
 	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h\\ 
 	(\sigma_{ij}^{t_s})^2 = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} (c_{ij}^h-\mu_{ij}^{t_s})^2\\
 	\rho_{ij-kl} = \frac{\sum_{h\in H^{t_s}} (c_{ij}^h - \mu_{ij}) (c_{kl}^h -
-	\mu_{kl})}{(|H^{t_s}-1| \sigma_{ij} \sigma_{kl})}
+	\mu_{kl})}{(|H^{t_s}|-1) \sigma_{ij} \sigma_{kl}}
 \end{gather}
 
 where $\rho$ is the Pearson correlation coefficient \cite{Soper17}
@@ -69,21 +69,21 @@ where $\lceil x \rceil^\phi$ rounds $x$ up to the next multiple of $\phi$ and $I
 We end this subsection with a note on \textit{query time} and \textit{prediction time}. When only historic data is used for prediction, the concept of prediction time becomes irrelevant. This means that if we are predicting for start time set to 9:00am today and we only use historic data, whether the query time is 7:00am or 8:00am does not make any difference since we only use $H^{t_s}$ corresponding to the start time to build the model. Prediction time and query time become important once we take the \textit{current situation} into account when building the prediction model which we will discuss in the following. 
 
 \subsection{Historical Data and Current Situation}
-The technique discussed in \cref{subsec:historical} provides link travel time distributions only based on historical data. These estimations may be a good choice if the start time $t_s$, for which the link travel time has to be predicted, is reasonably far (e.g., more than several hours) in the future. However, it may not be sufficient to capture current (and near future) traffic conditions with high confidence. For example, if we want to predict the travel time for 5 minutes later, the current situation of the road network might be more relevant than the historic data. Therefore, we present two parameter estimation methods, incorporating both, the historical as well as the current link travel times of edges.
+The technique discussed in \cref{subsec:historical} provides link travel time distributions only based on historical data. These estimations may be a good choice if the start time $t_s$, for which the link travel time has to be predicted, is reasonably far (e.g., more than several hours) in the future. However, it may not be sufficient to capture current (and near future) traffic conditions with high confidence. For example, if we want to predict the travel time for 5 minutes later, the current situation of the road network might be more relevant than the historic data. Therefore, we present two estimation methods, incorporating both, the historical as well as the current link travel times of edges.
 
 \subsubsection{Prediction through Linear Interpolation}
 \label{subsec:LI}
 The intuition of this approach is that 
 \begin{itemize}
-  \item for a start time $t_s$ which is far in the future, the historical prediction (cf \cref{subsec:historical}) is expected to yield a good prediction performance and
+  \item for a start time $t_s$ which is far in the future, the historical prediction (\cref{subsec:historical}) is expected to yield a good prediction performance and
 \item for the start time $t_s = t_q$, the current situation yields the best "prediction".
 \end{itemize}
 
 Thus, for a start time $t_s$ which is in the relatively near future, we argue that both, the historical as well as the current situation should influence the prediction. The closer the time $t_s$ is to $t_q$ (smaller prediction time) the more weight the current situation should have and vice versa. As the prediction time increases, we eventually get to a point where the current situation should loose it's influence. Towards this end we define a threshold parameter $\tau$, which defines the time-horizon in which the current situation has an influence on the prediction. Using a small time horizon $\tau$ is basically valuing the historic data, whereas setting $\tau$ to a larger value puts more weight on the current situation. We also define $\theta \in [0,1]$ as the relative importance of the current situation in the estimation. $\theta$ depends on the prediction time and is computed as:
 \begin{equation}
-\theta = min \{\frac{t_s-t_q}{\tau}, 1 \}
+\theta = min \{\frac{t_p}{\tau}, 1 \}
 \end{equation}
-where, as explained earlier, $t_s-t_q$ is the prediction time.
+where, as explained earlier, $t_p$ is the prediction time.
 
 For continuous representation of link travel times, we estimate the parameters of the normal distribution as:
 
@@ -114,7 +114,7 @@ where $\lceil x \rceil^\phi$ rounds $x$ up to the next multiple of $\phi$ and $I
 
 \subsubsection{Prediction through Similar Historical Data}
 \label{subsec:SH}
-The third and final approach we propose is based on the idea that the current situation is a crucial indicator of how the travel time of a link will develop in the future. In this approach we use the current situation to further restricts the set $H^t_s$. Specifically we only include times $h \in H^t_s$, for which link $(i, j)$ had a travel time similar to the current situation at time $h-(t_p)$. In this context, we define similarity by a percentage threshold $\lambda$, which represents the deviation from the current travel time. To illustrate this idea, we provide an example. Assume we are predicting the travel time for link $l$ where the $t_q=$ 7:00am and $t_s=$ 8:00am. We only consider the data points at 8:00am from days where the traffic at 7:00am was similar to today. For example, if the current travel time over link $l$, is 5 minutes and $\lambda = 0.2$, we only consider days where the travel time over link $l$ is somewhere between 4 minutes and 6 minutes.
+The third and final approach we propose is based on the idea that the current situation is a crucial indicator of how the travel time of a link will develop in the future. In this approach we use the current situation to further restricts the set $H^{t_s}$. Specifically we only include times $h \in H^{t_s}$, for which link $(i, j)$ had a travel time similar to the current situation at time $h-(t_p)$. In this context, we define similarity by a percentage threshold $\lambda$, which represents the deviation from the current travel time. To illustrate this idea, we provide an example. Assume we are predicting the travel time for link $l$ where $t_q=$ 7:00am and $t_s=$ 8:00am. We only consider the data points at 8:00am from days where the traffic at 7:00am was similar to today. For example, if the current travel time over link $l$, is 5 minutes and $\lambda = 0.2$, we only consider days where the travel time over link $l$ is somewhere between 4 minutes and 6 minutes.
 
 We can formally define the further restricted set $H_{i,j}^{t_s}$ as:
 
