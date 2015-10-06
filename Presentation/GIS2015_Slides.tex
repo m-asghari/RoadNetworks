@@ -1,7 +1,7 @@
 \documentclass[t]{beamer}
 \usepackage{beamerthemesplit}
 \usepackage{xcolor}
-\usepackage{color}
+\usepackage{color,colortbl}
 \usetheme{USC}
 \begin{document}
 
@@ -189,6 +189,176 @@ Then the PMF $F_{ij}$ of link travel time $c_{ij}$ will be:
 \end{equation*}
 }
 \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Similar Historic}
+\only<1>{
+\begin{center}
+	\includegraphics[scale=0.35]{similar_historic1.jpg}
+\end{center}
+}
+\only<2>{
+\begin{center}
+	\includegraphics[scale=0.35]{similar_historic2.jpg}
+\end{center}
+}
+\only<3>{
+\begin{center}
+	\includegraphics[scale=0.35]{similar_historic3.jpg}
+\end{center}
+}
+\only<4->{
+\begin{center}
+	\includegraphics[scale=0.35]{similar_historic4.jpg}
+\end{center}
+}
+\only<5->{
+\vspace{0.75in}
+\begin{equation*}
+H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h-t_p}}{c_{i,j}^{t_q}} \right| \leq \lambda \}  
+\end{equation*}
+}
+\end{frame}
+
+\begin{frame}\frametitle{Linear Interpolation}
+\only<1>{
+\begin{center}
+	\includegraphics[scale=0.45]{time_horizon1.jpg}
+\end{center}
+}
+\only<2>{
+\begin{center}
+	\includegraphics[scale=0.45]{time_horizon2.jpg}
+\end{center}
+}
+\only<3>{
+\begin{center}
+	\includegraphics[scale=0.45]{time_horizon3.jpg}
+\end{center}
+}
+\only<4->{
+\begin{center}
+	\includegraphics[scale=0.45]{time_horizon4.jpg}
+\end{center}
+}
+\begin{itemize}
+\item<5-> Time Horizon $\rightarrow \tau$
+\item<6-> $\theta = min \{\frac{t_p}{\tau}, 1 \}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Linear Interpolation \small{(cont'd)}}
+\begin{itemize}
+\item<1-> Continuous
+\only<1->{
+\begin{gather*}
+	\mu_{ij}^{t_s} = \left(\theta\cdot\frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h \right)
+	+ \left(1-\theta\right)\cdot c_{i,j}^{t_q}\\
+	(\sigma_{ij}^{t_s})^2 = \theta^2 \cdot \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}}
+	(c_{ij}^h-\mu_{ij}^{t_s})^2
+\end{gather*}
+}
+\item<2-> Discrete
+\only<2->{
+\begin{gather*}
+F_{ij}^{t_s}(b) = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} I(\lceil\theta \cdot 
+c_{ij}^h + (1-\theta)\cdot c_{i,j}^{t_q}\rceil^\phi = b)
+\end{gather*}
+}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Linear Interpolation \small{(cont'd)}}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.80\columnwidth]{tt_interpolation.jpg}\\
+    Linear Interpolation example with $\theta = 0.5$
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Route PDF (\textbackslash PMF) Classification}
+\begin{itemize}
+\item Continuous Vs. Discrete Link Models
+\item<2-> Time-Dependent Vs. Static
+\item<3-> Correlated Vs. Independent
+\end{itemize}
+\only<4>{
+\begin{table}
+\centering
+\begin{tabular}{| l || c | c | c | c|}
+\hline
+Method & Link model & Time-dependency & Correlation \\
+\hline    \hline
+ConStaInd & continuous  & no & no\\ \hline
+DisStaInd & discrete & no & no\\ \hline
+ConTimInd & continuous & yes & no\\ \hline
+DisTimInd & discrete & yes & no\\ \hline
+ConStaCor & continuous & no & yes\\ \hline
+DisStaCor & discrete & no & yes\\ \hline
+ConTimCor & continuous & yes & yes\\ \hline
+DisTimCor & discrete & yes & yes\\ \hline
+\end{tabular}
+\end{table}
+}
+\only<5>{
+\begin{table}
+\centering
+\begin{tabular}{| l || c | c | c | c|}
+\hline
+Method & Link model & Time-dependency & Correlation \\
+\hline    \hline
+\rowcolor{blue!25}
+ConStaInd & continuous  & no & no\\ \hline
+\rowcolor{blue!25}
+DisStaInd & discrete & no & no\\ \hline
+ConTimInd & continuous & yes & no\\ \hline
+\rowcolor{blue!25}
+DisTimInd & discrete & yes & no\\ \hline
+\rowcolor{blue!25}
+ConStaCor & continuous & no & yes\\ \hline
+DisStaCor & discrete & no & yes\\ \hline
+ConTimCor & continuous & yes & yes\\ \hline
+DisTimCor & discrete & yes & yes\\ \hline
+\end{tabular}
+\end{table}
+}
+\end{frame}
+
+\begin{frame}\frametitle{Route PDF (\textbackslash PMF) Computation Methods}
+\begin{itemize}
+\item \textbf{ConStaInd}
+\only<1>{
+\begin{gather*}
+	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij} \text{ and } \sigma_{p}^2 =
+	\sum_{(i,j)\in p} \sigma_{ij}^2 
+\end{gather*}
+}
+\item<2-> \textbf{DisStaInd}
+\only<2>{
+\begin{gather*}
+	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}(h)  , \forall b = 0, \phi,\ldots, L
+	\phi
+\end{gather*}
+}
+\item<3-> \textbf{DisTimInd}
+\only<3>{
+\begin{gather*}
+	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}^{b-h}(h)  , \forall b = 0,
+	\phi,\ldots, L
+	\phi
+\end{gather*}
+}
+\item<4-> \textbf{ConStaCor}
+\only<4>{
+\begin{gather*}
+	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij}, \\
+	\sigma_{p}^2 = \sum_{(i,j)\in p} \sigma_{ij}^2 +\sum_{(i,j)\neq(k,l)\in p}
+	\rho_{ij-kl}
+	\sigma_{ij} \sigma_{kl}
+\end{gather*}
+}
 \end{itemize}
 \end{frame}
 
