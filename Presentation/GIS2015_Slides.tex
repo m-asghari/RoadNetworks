@@ -1,7 +1,8 @@
 \documentclass[t]{beamer}
 \usepackage{beamerthemesplit}
 \usepackage{xcolor}
-\usepackage{color,colortbl}
+\usepackage{color}
+\usepackage{colortbl}
 \usetheme{USC}
 \begin{document}
 
@@ -17,7 +18,7 @@
 \begin{columns}
   \column{.2\textwidth}
   \begin{center}
-    \includegraphics[height=1.5cm]{viterbi_logo.jpg}   
+    \includegraphics[height=1.5cm]{viterbi_logo.jpg}
   \end{center}
   \column{.6\textwidth}
   \column{.2\textwidth}
@@ -192,6 +193,77 @@ Then the PMF $F_{ij}$ of link travel time $c_{ij}$ will be:
 \end{itemize}
 \end{frame}
 
+\begin{frame}\frametitle{Historic Data}
+\begin{equation*}
+H = \{h | h < t_q\}
+\end{equation*}
+
+\begin{itemize}
+\item<2-> Which historic data should we use?
+\end{itemize}
+\vspace{0.25in}
+\only<3->{
+\begin{equation*}
+H^{t_s} \subset H
+\end{equation*}
+}
+\only<4->{
+\begin{exampleblock}{}
+\begin{center}
+At a specific \textbf{time of day}, the traffic follows similar patterns during \textbf{weekdays}.\\
+\end{center}
+\tiny{* B. Pan et. al., \textit{Utilizing real-world transportation data for accurate traffic prediction}.}
+\end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}\frametitle{Historic Data \small{(cont'd)}}
+\begin{itemize}
+\item Continuous
+\begin{gather*}
+	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h\\ 
+	(\sigma_{ij}^{t_s})^2 = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} (c_{ij}^h-\mu_{ij}^{t_s})^2\\
+	\rho_{ij-kl} = \frac{\sum_{h\in H^{t_s}} (c_{ij}^h - \mu_{ij}) (c_{kl}^h -
+	\mu_{kl})}{(|H^{t_s}|-1) \sigma_{ij} \sigma_{kl}}
+\end{gather*}
+\item<2-> Discrete
+\only<2->{
+\begin{gather*}
+  F_{ij}^{t_s}(b) = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} I(\lceil c_{ij}^h \rceil^\phi= b)
+\end{gather*}
+}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Historic Data \small{(cont'd)}}
+\vspace{-0.45in}
+\begin{columns}
+\column{0.5\textwidth}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.2]{ltt_0900.jpg}
+		\vspace{-0.05in}
+		\\ 09:00AM
+	\end{figure}
+\column{0.5\textwidth}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.2]{ltt_1200.jpg}
+		\vspace{-0.05in}
+		\\ 12:00PM
+	\end{figure}
+\end{columns}
+\begin{center}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.2]{ltt_1800.jpg}	
+		\vspace{-0.05in}
+		\\ 06:00PM
+	\end{figure}
+\end{center}
+
+\end{frame}
+
 \begin{frame}\frametitle{Similar Historic}
 \only<1>{
 \begin{center}
@@ -278,6 +350,9 @@ c_{ij}^h + (1-\theta)\cdot c_{i,j}^{t_q}\rceil^\phi = b)
 \end{figure}
 \end{frame}
 
+\section{Route Reliability Computation}
+\frame{\frametitle{Outline}\tableofcontents[currentsection]}
+
 \begin{frame}\frametitle{Route PDF (\textbackslash PMF) Classification}
 \begin{itemize}
 \item Continuous Vs. Discrete Link Models
@@ -361,5 +436,101 @@ DisTimCor & discrete & yes & yes\\ \hline
 }
 \end{itemize}
 \end{frame}
+
+\section{Evaluating Probabilistic Predictions}
+\frame{\frametitle{Outline}\tableofcontents[currentsection]}
+
+\section{Experiments}
+\frame{\frametitle{Outline}\tableofcontents[currentsection]}
+
+\begin{frame}\frametitle{Data Set}
+
+\begin{itemize}
+\item<2-> 50 links of $\sim 1$ mile.
+\item<3-> 10 routes of $\sim 40$ mile.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Methodology}
+\begin{itemize}
+\item Start Times: 8:00AM, 9:00AM, 4:00PM, 5:00PM, 6:00PM during weekdays in 2013\\
+\only<2->{$\rightarrow 5$ days $\times \ 52$ weeks $ = 260$ sample for each start time}.
+\item<3-> We use k-fold cross validation (k = 5).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Historic}
+\vspace{0.5in}
+\begin{columns}
+	\column{0.5\textwidth}
+		\includegraphics[scale=0.3]{Links_Historic.png}
+	\column{0.5\textwidth}
+		\includegraphics[scale=0.3]{Links_Historic_TOD.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{Similar Historic}
+\begin{center}
+	\includegraphics[scale=0.5]{Links_Filtered.png}
+\end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Linear Interpolation}
+\vspace{0.5in}
+\begin{columns}
+	\column{0.5\textwidth}
+		\includegraphics[scale=0.3]{Links_Interpolated_TimeHorizon.png}
+	\column{0.5\textwidth}
+		\includegraphics[scale=0.3]{Links_Interpolated_Theta.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{Best Parameters}
+\begin{center}
+	\includegraphics[scale=0.5]{Links_Best.png}
+\end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Routes}
+\vspace{-0.35in}
+\begin{columns}
+	\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[scale=0.3]{Approaches_ConStaInd.png}\\
+			ConStaInd
+		\end{center}
+	\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[scale=0.3]{Approaches_DisStaInd.png}\\
+			DisStaInd
+		\end{center}
+\end{columns}
+\begin{columns}
+	\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[scale=0.3]{Approaches_DisTimInd.png}\\
+			DisTimInd
+		\end{center}
+	\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[scale=0.3]{Approaches_ConStaCor.png}\\
+			ConStaCor
+		\end{center}
+\end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{Routes \small{(cont'd)}}
+\vspace{0.5in}
+\begin{center}
+	\includegraphics[scale=0.3]{Approaches_All.png}
+\end{center}
+\end{frame}
+
+
+\section{Q \& A}
+\frame{\frametitle{Outline}\tableofcontents[currentsection]}
+
+
 
 \end{document}
