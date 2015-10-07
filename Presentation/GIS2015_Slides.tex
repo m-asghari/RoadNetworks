@@ -440,11 +440,33 @@ DisTimCor & discrete & yes & yes\\ \hline
 \section{Evaluating Probabilistic Predictions}
 \frame{\frametitle{Outline}\tableofcontents[currentsection]}
 
+\begin{frame}\frametitle{Evaluation}
+\begin{itemize}
+\item Goodness of fit
+\item<2-> Scoring Rules
+\only<2->{
+\begin{gather*}
+S^{Brier}(f^t, v^t) = -\sum_{c \in C} (f^t(c) - I(v^t = c))^2
+\end{gather*}
+}
+\item<3-> Continuous Ranked Probability Score
+\only<3->{
+\begin{gather*}
+CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
+\geq v^t) dx
+\end{gather*}
+}
+\end{itemize}
+\end{frame}
+
 \section{Experiments}
 \frame{\frametitle{Outline}\tableofcontents[currentsection]}
 
 \begin{frame}\frametitle{Data Set}
-
+\vspace{-0.25in}
+\begin{center}
+	\includegraphics[scale=0.16]{LA-map.jpg}
+\end{center}
 \begin{itemize}
 \item<2-> 50 links of $\sim 1$ mile.
 \item<3-> 10 routes of $\sim 40$ mile.
@@ -454,8 +476,24 @@ DisTimCor & discrete & yes & yes\\ \hline
 \begin{frame}\frametitle{Methodology}
 \begin{itemize}
 \item Start Times: 8:00AM, 9:00AM, 4:00PM, 5:00PM, 6:00PM during weekdays in 2013\\
-\only<2->{$\rightarrow 5$ days $\times \ 52$ weeks $ = 260$ sample for each start time}.
-\item<3-> We use k-fold cross validation (k = 5).
+\only<2->{$\rightarrow 5$ days $\times \ 52$ weeks $ = 260$ sample for each start time.}
+\item<3-> Prediction Times: 5, 10, 15, 30, 60, 90 and 120 minutes
+\item<4-> We use k-fold cross validation (k = 5).
+\only<4>{
+\begin{center}
+	\includegraphics[scale=0.35]{k-fold1.jpg}
+\end{center}
+}
+\only<5>{
+\begin{center}
+	\includegraphics[scale=0.35]{k-fold2.jpg}
+\end{center}
+}
+\only<6>{
+\begin{center}
+	\includegraphics[scale=0.35]{k-fold3.jpg}
+\end{center}
+}
 \end{itemize}
 
 \end{frame}
