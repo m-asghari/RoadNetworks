@@ -131,14 +131,49 @@
 \frame{\frametitle{Outline}\tableofcontents}
 
 \begin{frame}\frametitle{Definitions}
-\vspace{-0.2in}
+\vspace{-0.25in}
 \begin{block}{\textit{Probabilistic Link Travel Times \textit{(pltt)}}}
-The probabilistic link travel time of link $(i,j)$, $c_{ij}^t(x)$, is the probability of taking $x$ seconds for a vehicle to traverse link $(i,j)$ starting at time $t$.
+The probabilistic link travel time of link $(i,j)$, $c_{ij}^t(x)$, is the probability of taking $x$ minutes for a vehicle to traverse link $(i,j)$ starting at time $t$.
 \end{block}
+\only<1>{\begin{columns}
+\column{0.5\textwidth}
+\vspace{-0.23in}
+\begin{itemize}
+\item e.g.,
+\end{itemize}
+\begin{center}
+	\includegraphics[scale=0.35]{link_ij.jpg}\\
+	$c_{ij}^{t_1}(6) = 0.3$ 
+\end{center}
+\column{0.5\textwidth}
+\vspace{-0.23in}
+\begin{center}
+	\includegraphics[scale=0.3]{pltt_ij.jpg}
+\end{center}
+\end{columns}
+}
+\vspace{-0.1in}
 \only<2->{
 \begin{alertblock}{Route PDF (\textbackslash PMF)}
-If $p_{sd}$ is a path starting at $s$ and ending in $d$, $\pi_{sd}^t$ is the random variable representing the travel time on $p_{sd}$ when we start at time $t$. Accordingly, the route pdf, $J_{sd}^t(x)$, gives the probability of taking $x$ seconds for a vehicle to traverse $p_{sd}$ starting at time $t$
+If $p_{sd}$ is a path starting at $s$ and ending in $d$, $\pi_{sd}^t$ is the random variable representing the travel time on $p_{sd}$ when we start at time $t$. Accordingly, the route pdf, $J_{sd}^t(x)$, gives the probability of taking $x$ minutes for a vehicle to traverse $p_{sd}$ starting at time $t$
 \end{alertblock}
+}
+\only<2>{\begin{columns}
+\column{0.5\textwidth}
+\vspace{-0.23in}
+\begin{itemize}
+\item e.g.,
+\end{itemize}
+\begin{center}
+	\includegraphics[scale=0.35]{path_sd.jpg}\\
+	$J_{sd}^{t_1}(50) = 0.059$ 
+\end{center}
+\column{0.5\textwidth}
+\vspace{-0.3in}
+\begin{center}
+	\includegraphics[scale=0.3]{pmf_sd.jpg}
+\end{center}
+\end{columns}
 }
 \only<3>{
 \begin{center}
@@ -228,7 +263,7 @@ At a specific \textbf{time of day}, the traffic follows similar patterns during 
 
 \begin{frame}\frametitle{Historic Data \small{(cont'd)}}
 \begin{itemize}
-\item Continuous
+\item Continuous (e.g., Gaussian)
 \begin{gather*}
 	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h\\ 
 	(\sigma_{ij}^{t_s})^2 = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} (c_{ij}^h-\mu_{ij}^{t_s})^2\\
