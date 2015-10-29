@@ -4,6 +4,9 @@
 \usepackage{color}
 \usepackage{colortbl}
 \usetheme{USC}
+
+\definecolor{mygreen}{RGB}{0, 108, 57}
+
 \begin{document}
 
 \graphicspath{ {../Manuscript/figures/}{Graphics/} }
@@ -27,9 +30,6 @@
   \end{center}
 \end{columns} 
 \end{frame}
-
-\begin{frame}\frametitle{Outline}\tableofcontents
-\end{frame} 
 
 \section{Introduction}
 \begin{frame}\frametitle{Motivation}
@@ -223,8 +223,6 @@ At a specific \textbf{time of day}, the traffic follows similar patterns during 
 \begin{gather*}
 	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h\\ 
 	(\sigma_{ij}^{t_s})^2 = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} (c_{ij}^h-\mu_{ij}^{t_s})^2\\
-	\rho_{ij-kl} = \frac{\sum_{h\in H^{t_s}} (c_{ij}^h - \mu_{ij}) (c_{kl}^h -
-	\mu_{kl})}{(|H^{t_s}|-1) \sigma_{ij} \sigma_{kl}}
 \end{gather*}
 \item<2-> Discrete
 \only<2->{
@@ -241,10 +239,18 @@ At a specific \textbf{time of day}, the traffic follows similar patterns during 
 \column{0.5\textwidth}
 	\begin{figure}
 		\centering
+		\includegraphics[scale=0.15]{segment.jpg}
+	\end{figure}
+\column{0.5\textwidth}
+	\begin{figure}
+		\centering
 		\includegraphics[scale=0.2]{ltt_0900.jpg}
 		\vspace{-0.05in}
 		\\ 09:00AM
 	\end{figure}
+\end{columns}
+\vspace{-0.1in}
+\begin{columns}
 \column{0.5\textwidth}
 	\begin{figure}
 		\centering
@@ -252,40 +258,33 @@ At a specific \textbf{time of day}, the traffic follows similar patterns during 
 		\vspace{-0.05in}
 		\\ 12:00PM
 	\end{figure}
-\end{columns}
-\begin{center}
+\column{0.5\textwidth}
 	\begin{figure}
 		\centering
-		\includegraphics[scale=0.2]{ltt_1800.jpg}	
+		\includegraphics[scale=0.2]{ltt_1800.jpg}
 		\vspace{-0.05in}
-		\\ 06:00PM
+		\\ 6:00PM
 	\end{figure}
-\end{center}
-
+\end{columns}
 \end{frame}
 
 \begin{frame}\frametitle{Similar Historic}
 \only<1>{
 \begin{center}
-	\includegraphics[scale=0.35]{similar_historic1.jpg}
+	\includegraphics[scale=0.35]{similar_historic2.jpg}
 \end{center}
 }
 \only<2>{
 \begin{center}
-	\includegraphics[scale=0.35]{similar_historic2.jpg}
-\end{center}
-}
-\only<3>{
-\begin{center}
 	\includegraphics[scale=0.35]{similar_historic3.jpg}
 \end{center}
 }
-\only<4->{
+\only<3->{
 \begin{center}
 	\includegraphics[scale=0.35]{similar_historic4.jpg}
 \end{center}
 }
-\only<5->{
+\only<4->{
 \vspace{0.75in}
 \begin{equation*}
 H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h-t_p}}{c_{i,j}^{t_q}} \right| \leq \lambda \}  
@@ -320,29 +319,30 @@ H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h
 \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Linear Interpolation \small{(cont'd)}}
-\begin{itemize}
-\item<1-> Continuous
-\only<1->{
-\begin{gather*}
-	\mu_{ij}^{t_s} = \left(\theta\cdot\frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h \right)
-	+ \left(1-\theta\right)\cdot c_{i,j}^{t_q}\\
-	(\sigma_{ij}^{t_s})^2 = \theta^2 \cdot \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}}
-	(c_{ij}^h-\mu_{ij}^{t_s})^2
-\end{gather*}
-}
-\item<2-> Discrete
-\only<2->{
-\begin{gather*}
-F_{ij}^{t_s}(b) = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} I(\lceil\theta \cdot 
-c_{ij}^h + (1-\theta)\cdot c_{i,j}^{t_q}\rceil^\phi = b)
-\end{gather*}
-}
-\end{itemize}
+%\begin{frame}\frametitle{Linear Interpolation \small{(cont'd)}}
+%\begin{itemize}
+%\item<1-> Continuous
+%\only<1->{
+%\begin{gather*}
+%	\mu_{ij}^{t_s} = \left(\theta\cdot\frac{1}{|H^{t_s}|}\sum_{h\in %H^{t_s}} c_{i,j}^h \right)
+%	+ \left(1-\theta\right)\cdot c_{i,j}^{t_q}\\
+%	(\sigma_{ij}^{t_s})^2 = \theta^2 \cdot \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}}
+%	(c_{ij}^h-\mu_{ij}^{t_s})^2
+%\end{gather*}
+%}
+%\item<2-> Discrete
+%\only<2->{
+%\begin{gather*}
+%F_{ij}^{t_s}(b) = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} I(\lceil\theta \cdot 
+%c_{ij}^h + (1-\theta)\cdot c_{i,j}^{t_q}\rceil^\phi = b)
+%\end{gather*}
+%}
+%\end{itemize}
+%
+%\end{frame}
 
-\end{frame}
-
 \begin{frame}\frametitle{Linear Interpolation \small{(cont'd)}}
+
 \begin{figure}
     \centering
     \includegraphics[width=0.80\columnwidth]{tt_interpolation.jpg}\\
@@ -401,41 +401,41 @@ DisTimCor & discrete & yes & yes\\ \hline
 }
 \end{frame}
 
-\begin{frame}\frametitle{Route PDF (\textbackslash PMF) Computation Methods}
-\begin{itemize}
-\item \textbf{ConStaInd}
-\only<1>{
-\begin{gather*}
-	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij} \text{ and } \sigma_{p}^2 =
-	\sum_{(i,j)\in p} \sigma_{ij}^2 
-\end{gather*}
-}
-\item<2-> \textbf{DisStaInd}
-\only<2>{
-\begin{gather*}
-	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}(h)  , \forall b = 0, \phi,\ldots, L
-	\phi
-\end{gather*}
-}
-\item<3-> \textbf{DisTimInd}
-\only<3>{
-\begin{gather*}
-	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}^{b-h}(h)  , \forall b = 0,
-	\phi,\ldots, L
-	\phi
-\end{gather*}
-}
-\item<4-> \textbf{ConStaCor}
-\only<4>{
-\begin{gather*}
-	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij}, \\
-	\sigma_{p}^2 = \sum_{(i,j)\in p} \sigma_{ij}^2 +\sum_{(i,j)\neq(k,l)\in p}
-	\rho_{ij-kl}
-	\sigma_{ij} \sigma_{kl}
-\end{gather*}
-}
-\end{itemize}
-\end{frame}
+%\begin{frame}\frametitle{Route PDF (\textbackslash PMF) Computation Methods}
+%\begin{itemize}
+%\item \textbf{ConStaInd}
+%\only<1>{
+%\begin{gather*}
+%	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij} \text{ and } \sigma_{p}^2 =
+%	\sum_{(i,j)\in p} \sigma_{ij}^2 
+%\end{gather*}
+%}
+%\item<2-> \textbf{DisStaInd}
+%\only<2>{
+%\begin{gather*}
+%	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}(h)  , \forall b = 0, \phi,\ldots, L
+%	\phi
+%\end{gather*}
+%}
+%\item<3-> \textbf{DisTimInd}
+%\only<3>{
+%\begin{gather*}
+%	J_{sj}(b) = \sum_{h=0}^b J_{si}(b-h) F_{ij}^{b-h}(h)  , \forall b = 0,
+%	\phi,\ldots, L
+%	\phi
+%\end{gather*}
+%}
+%\item<4-> \textbf{ConStaCor}
+%\only<4>{
+%\begin{gather*}
+%	\mu_{p} = \sum_{(i,j)\in p} \mu_{ij}, \\
+%	\sigma_{p}^2 = \sum_{(i,j)\in p} \sigma_{ij}^2 +\sum_{(i,j)\neq(k,l)\in p}
+%	\rho_{ij-kl}
+%	\sigma_{ij} \sigma_{kl}
+%\end{gather*}
+%}
+%\end{itemize}
+%\end{frame}
 
 \section{Evaluating Probabilistic Predictions}
 \frame{\frametitle{Outline}\tableofcontents[currentsection]}
@@ -443,14 +443,28 @@ DisTimCor & discrete & yes & yes\\ \hline
 \begin{frame}\frametitle{Evaluation}
 \begin{itemize}
 \item Goodness of fit
-\item<2-> Scoring Rules
-\only<2->{
-\begin{gather*}
-S^{Brier}(f^t, v^t) = -\sum_{c \in C} (f^t(c) - I(v^t = c))^2
-\end{gather*}
+\only<1>{
+\begin{center}
+	\includegraphics[scale=0.35]{goodness_of_fit.jpg}
+\end{center}
 }
-\item<3-> Continuous Ranked Probability Score
-\only<3->{
+\item<2-> Scoring Rules
+\only<2>{
+\begin{center}
+	\includegraphics[scale=0.25]{scoring_rules1.jpg}
+\end{center}
+}
+\only<3>{
+\begin{center}
+	\includegraphics[scale=0.25]{scoring_rules3.jpg}
+\end{center}
+}
+\item<4-> Continuous Ranked Probability Score (CRPS)
+\begin{itemize}
+\item<4-> Can assign a score to a \textcolor{blue}{\emph{single}} observation.
+\item<4-> Suitable for both \textcolor{blue}{\emph{categorical}} and \textcolor{blue}{\emph{ordinal}} values.
+\end{itemize}
+\only<4->{
 \begin{gather*}
 CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 \geq v^t) dx
@@ -465,9 +479,10 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 \begin{frame}\frametitle{Data Set}
 \vspace{-0.25in}
 \begin{center}
-	\includegraphics[scale=0.16]{LA-map.jpg}
+	\includegraphics[scale=0.4]{LA-map.jpg}
 \end{center}
 \begin{itemize}
+\item 9300 loop-detectors updated every 30 seconds covering 3500+ miles.
 \item<2-> 50 links of $\sim 1$ mile.
 \item<3-> 10 routes of $\sim 40$ mile.
 \end{itemize}
@@ -502,15 +517,15 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 \vspace{0.5in}
 \begin{columns}
 	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Historic.png}
+		\includegraphics[scale=0.3]{Links_Historic.jpg}
 	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Historic_TOD.png}
+		\includegraphics[scale=0.3]{Links_Historic_TOD.jpg}
 \end{columns}
 \end{frame}
 
 \begin{frame}\frametitle{Similar Historic}
 \begin{center}
-	\includegraphics[scale=0.5]{Links_Filtered.png}
+	\includegraphics[scale=0.5]{Links_Filtered.jpg}
 \end{center}
 \end{frame}
 
@@ -518,56 +533,116 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 \vspace{0.5in}
 \begin{columns}
 	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Interpolated_TimeHorizon.png}
+		\includegraphics[scale=0.3]{Links_Interpolated_TimeHorizon.jpg}
 	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Interpolated_Theta.png}
+		\includegraphics[scale=0.3]{Links_Interpolated_Theta.jpg}
 \end{columns}
 \end{frame}
 
 \begin{frame}\frametitle{Best Parameters}
 \begin{center}
-	\includegraphics[scale=0.5]{Links_Best.png}
+	\includegraphics[scale=0.5]{Links_Best.jpg}
 \end{center}
 \end{frame}
 
-\begin{frame}\frametitle{Routes}
+\begin{frame}\frametitle{Routes \small{(cont'd)}}
 \vspace{-0.35in}
 \begin{columns}
 	\column{0.5\textwidth}
 		\begin{center}
-			\includegraphics[scale=0.3]{Approaches_ConStaInd.png}\\
+			\includegraphics[scale=0.3]{Approaches_ConStaInd.jpg}\\
 			ConStaInd
 		\end{center}
 	\column{0.5\textwidth}
 		\begin{center}
-			\includegraphics[scale=0.3]{Approaches_DisStaInd.png}\\
+			\includegraphics[scale=0.3]{Approaches_DisStaInd.jpg}\\
 			DisStaInd
 		\end{center}
 \end{columns}
 \begin{columns}
 	\column{0.5\textwidth}
 		\begin{center}
-			\includegraphics[scale=0.3]{Approaches_DisTimInd.png}\\
+			\includegraphics[scale=0.3]{Approaches_DisTimInd.jpg}\\
 			DisTimInd
 		\end{center}
 	\column{0.5\textwidth}
 		\begin{center}
-			\includegraphics[scale=0.3]{Approaches_ConStaCor.png}\\
+			\includegraphics[scale=0.3]{Approaches_ConStaCor.jpg}\\
 			ConStaCor
 		\end{center}
 \end{columns}
+\only<2->{
+\vskip-1.8in
+\begin{exampleblock}{}
+   \begin{center}
+   The accuracy of the \textit{pltt} technique \textbf{directly} impacts\\ the accuracy of the route \textit{pmf} in all approaches.
+   \end{center}
+\end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}\frametitle{Routes}
+\only<1>{
+\begin{center}
+	\includegraphics[scale=0.3]{Approaches_All1.jpg}
+\end{center}
+}
+\only<2>{
+\begin{center}
+	\includegraphics[scale=0.3]{Approaches_All2.jpg}
+\end{center}
+}
+\only<3>{
+\begin{center}
+	\includegraphics[scale=0.3]{Approaches_All3.jpg}
+\end{center}
+}
+\only<4>{
+\begin{center}
+	\includegraphics[scale=0.3]{Approaches_All4.jpg}
+\end{center}
+}
+\only<5>{
+\begin{center}
+	\includegraphics[scale=0.3]{Approaches_All5.jpg}
+\end{center}
+}
+\begin{itemize}
+\item<2-> All probabilistic approaches perform considerably better than the non-probabilistic (\textit{Baseline}) approach.
+\item<3-> The choice between Continuous Vs. Discrete pltts don't affect the result.
+\item<4-> Time-dependent approaches improve the results by ~\%10-20.
+\item<5-> Link correlations don't have much influence on the results.
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Routes \small{(cont'd)}}
-\vspace{0.5in}
-\begin{center}
-	\includegraphics[scale=0.3]{Approaches_All.png}
-\end{center}
+\begin{columns}
+	\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[scale=0.3]{Approaches_ConStaInd2.jpg}\\
+			ConStaInd
+		\end{center}
+	\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[scale=0.3]{Approaches_DisTimInd2.jpg}\\
+			DisStaInd
+		\end{center}
+\end{columns}
+\vspace{0.1in}
+\only<2->{
+\begin{exampleblock}{}
+   \begin{center}
+   A \textcolor{mygreen}{\textbf{good}} \textit{pltt} technique applied to a \textcolor{red}{\textbf{bad}} approach\\
+   is \textbf{better} than\\
+   a \textcolor{red}{\textbf{bad}} \textit{pltt} technique applied to a \textcolor{mygreen}{\textbf{good}} approach.
+   \end{center}
+\end{exampleblock}
+}
 \end{frame}
 
 
 \section{Q \& A}
-\frame{\frametitle{Outline}\tableofcontents[currentsection]}
+
 
 
 
