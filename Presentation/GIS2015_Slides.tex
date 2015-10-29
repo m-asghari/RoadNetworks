@@ -521,12 +521,21 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 	\column{0.5\textwidth}
 		\includegraphics[scale=0.3]{Links_Historic_TOD.jpg}
 \end{columns}
+\begin{itemize}
+\item Discrete Vs. Continuous \emph{pltts} have almost the same outcome. \textcolor{blue}{We will only consider discrete \emph{pltts} from this point forward.}
+\item Uncertainty during rush hours is higher.
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Similar Historic}
 \begin{center}
-	\includegraphics[scale=0.5]{Links_Filtered.jpg}
+	\includegraphics[scale=0.45]{Links_Filtered.jpg}
 \end{center}
+\begin{itemize}
+\item Small values of $\lambda$ over-fit the model $\implies$ \textcolor{red}{bad predictions}.
+\item Large values of $\lambda$ result in dissimilar training data $\implies$ \textcolor{red}{bad predictions}.
+\item We choose \textcolor{mygreen}{0.1} as the optimal value for $\lambda$.
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Linear Interpolation}
@@ -537,6 +546,9 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 	\column{0.5\textwidth}
 		\includegraphics[scale=0.3]{Links_Interpolated_Theta.jpg}
 \end{columns}
+\begin{itemize}
+\item 
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Best Parameters}
