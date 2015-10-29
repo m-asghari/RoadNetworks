@@ -59,12 +59,12 @@
 \begin{exampleblock}{}\textit{What's the probability of reaching campus in \textbf{at most} 60 minutes?}
 \end{exampleblock}
 }
-\only<4>{
+\only<3>{
 \begin{equation*}
 \sum_{i \leq 60} P(i)
 \end{equation*}
 }
-\only<5>{
+\only<4>{
 \begin{itemize}
 	\item \textcolor{blue}{Route A:} 89\%
 	\item \textcolor{red}{Route B:} 99.2\%	
@@ -75,10 +75,10 @@
 \begin{frame}\frametitle{Probabilistic Travel Times}
 \begin{columns}
 \column{0.5\textwidth}
+\vspace{-0.3in}
+\begin{itemize}
+\item How to compute the travel time \textit{PMF} for an entire route?
 \only<2->{
-How to compute the travel time \textit{PMF} for an entire route?
-}
-\only<3->{
 \begin{itemize}
 \item \tiny{H. Frank, \textit{Shortest paths in probabilistic graphs.}}
 \item \tiny{E.D. Miller-Hooks et al., \textit{Least expected time paths in stochastic, time-varying transportation networks.}}
@@ -86,6 +86,7 @@ How to compute the travel time \textit{PMF} for an entire route?
 \item ... 
 \end{itemize}
 }
+\end{itemize}
 \column{0.5\textwidth}
 \begin{center}
 	\vspace{-0.35in}
@@ -95,18 +96,18 @@ How to compute the travel time \textit{PMF} for an entire route?
 
 \begin{columns}
 \column{0.7\textwidth}
-\only<4-5>{
+\only<2-3>{
 \begin{center}
 	\includegraphics[scale=0.33]{route_construction1.jpg}
 \end{center}
 }
-\only<6->{
+\only<4->{
 \begin{center}
 	\includegraphics[scale=0.33]{route_construction2.jpg}
 \end{center}
 }
 \column{0.3\textwidth}
-\only<5->{
+\only<3->{
 \begin{center}
 	\vspace{0.2in}
 	\includegraphics[scale=0.33]{sample_pmf2.jpg}
@@ -115,8 +116,19 @@ How to compute the travel time \textit{PMF} for an entire route?
 \end{columns}
 \end{frame}
 
+\begin{frame}\frametitle{Probabilistic Link Travel Times}
+\begin{itemize}
+\item How important is to be able to compute probabilistic link travel times (\emph{pltts})?
+\begin{itemize}
+\item<2-> The end-to-end process of building route \emph{pmfs} from \textbf{real data} will be impossible.
+\item<3-> The accuracy of the \emph{pltts}  \textbf{directly} impacts the accuracy of the route \emph{pmf} in all approaches.
+\item<4-> A \textcolor{mygreen}{\textbf{good}} \textit{pltt} technique applied to a \textcolor{red}{\textbf{bad}} algorithm is \textbf{better} than a \textcolor{red}{\textbf{bad}} \textit{pltt} technique applied to a \textcolor{mygreen}{\textbf{good}} algorithm.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 \section{Definitions}
-\frame{\frametitle{Outline}\tableofcontents[currentsection]}
+\frame{\frametitle{Outline}\tableofcontents}
 
 \begin{frame}\frametitle{Definitions}
 \vspace{-0.2in}
@@ -153,24 +165,21 @@ If $p_{sd}$ is a path starting at $s$ and ending in $d$, $\pi_{sd}^t$ is the ran
 \section{Probabilistic Link Travel Times}
 \frame{\frametitle{Outline}\tableofcontents[currentsection]}
 
-\begin{frame}
+\begin{frame}\frametitle{Probabilistic Link Travel Times}
 \begin{itemize}
 \item Historic Data Vs. Current Situation
 \item<2-> PLTT Representation (Continuous Vs. Discrete)
 \begin{itemize}
 \item<3-> Continuous\\
 \only<3>{
-Link Travel times are normally or gamma distributed.
-}
-\only<4->{
 Link Travel times are \textbf{normally} or gamma distributed
 \begin{itemize}
-\item $c_{ij}^t$ is characterized by a mean $\mu_{ij}^t$ and a standard deviation $\sigma_{ij}^t$.
+\item<3> $c_{ij}^t$ is characterized by a mean $\mu_{ij}^t$ and a standard deviation $\sigma_{ij}^t$.
 \end{itemize}
 }
-\item<5-> Discrete\\
+\item<4-> Discrete\\
 
-\only<6->{
+\only<4->{
 We use b-discrete to discretize the time domain into intervals of length $\phi$:
 
 \begin{equation*}
@@ -178,7 +187,7 @@ We use b-discrete to discretize the time domain into intervals of length $\phi$:
 \end{equation*}
 }
 
-\only<7->{
+\only<5->{
 Then the PMF $F_{ij}$ of link travel time $c_{ij}$ will be:
 \begin{equation*}
 	F_{ij}(b) = \begin{cases}\int_b^{b+\phi}f_{ij}(w)dw \qquad b =
@@ -199,15 +208,15 @@ H = \{h | h < t_q\}
 \end{equation*}
 
 \begin{itemize}
-\item<2-> Which historic data should we use?
+\item Which historic data should we use?
 \end{itemize}
 \vspace{0.25in}
-\only<3->{
+\only<2->{
 \begin{equation*}
 H^{t_s} \subset H
 \end{equation*}
 }
-\only<4->{
+\only<2->{
 \begin{exampleblock}{}
 \begin{center}
 At a specific \textbf{time of day}, the traffic follows similar patterns during \textbf{weekdays}.\\
@@ -224,12 +233,10 @@ At a specific \textbf{time of day}, the traffic follows similar patterns during 
 	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h\\ 
 	(\sigma_{ij}^{t_s})^2 = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} (c_{ij}^h-\mu_{ij}^{t_s})^2\\
 \end{gather*}
-\item<2-> Discrete
-\only<2->{
+\item Discrete
 \begin{gather*}
   F_{ij}^{t_s}(b) = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} I(\lceil c_{ij}^h \rceil^\phi= b)
 \end{gather*}
-}
 \end{itemize}
 \end{frame}
 
@@ -283,8 +290,6 @@ At a specific \textbf{time of day}, the traffic follows similar patterns during 
 \begin{center}
 	\includegraphics[scale=0.35]{similar_historic4.jpg}
 \end{center}
-}
-\only<4->{
 \vspace{0.75in}
 \begin{equation*}
 H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h-t_p}}{c_{i,j}^{t_q}} \right| \leq \lambda \}  
@@ -314,8 +319,13 @@ H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h
 \end{center}
 }
 \begin{itemize}
-\item<5-> Time Horizon $\rightarrow \tau$
-\item<6-> $\theta = min \{\frac{t_p}{\tau}, 1 \}$
+\item<4-> We define a threshold parameter, $\tau$, as the \textcolor{orange}{Time Horizon} in which the current situation has an influence on the prediction.
+\item<5-> We define $\theta \in \left[ 0, 1 \right]$ as the relative importance of the current situation:
+\only<5->{
+\begin{equation*}
+\theta = min \{\frac{t_p}{\tau}, 1 \}
+\end{equation*}
+}
 \end{itemize}
 \end{frame}
 
@@ -356,10 +366,10 @@ H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h
 \begin{frame}\frametitle{Route PDF (\textbackslash PMF) Classification}
 \begin{itemize}
 \item Continuous Vs. Discrete Link Models
-\item<2-> Time-Dependent Vs. Static
-\item<3-> Correlated Vs. Independent
+\item Time-Dependent Vs. Static
+\item Correlated Vs. Independent
 \end{itemize}
-\only<4>{
+\only<2>{
 \begin{table}
 \centering
 \begin{tabular}{| l || c | c | c | c|}
@@ -377,7 +387,7 @@ DisTimCor & discrete & yes & yes\\ \hline
 \end{tabular}
 \end{table}
 }
-\only<5>{
+\only<3->{
 \begin{table}
 \centering
 \begin{tabular}{| l || c | c | c | c|}
@@ -447,6 +457,9 @@ DisTimCor & discrete & yes & yes\\ \hline
 \begin{center}
 	\includegraphics[scale=0.35]{goodness_of_fit.jpg}
 \end{center}
+\begin{itemize}
+\item Does not work well when the number of observations are \textcolor{blue}{\emph{small}}.
+\end{itemize}
 }
 \item<2-> Scoring Rules
 \only<2>{
@@ -458,7 +471,11 @@ DisTimCor & discrete & yes & yes\\ \hline
 \begin{center}
 	\includegraphics[scale=0.25]{scoring_rules3.jpg}
 \end{center}
+\begin{itemize}
+\item Good for \textcolor{blue}{\emph{categorical}} values and not suitable for \textcolor{blue}{\emph{ordinal}} values.
+\end{itemize}
 }
+
 \item<4-> Continuous Ranked Probability Score (CRPS)
 \begin{itemize}
 \item<4-> Can assign a score to a \textcolor{blue}{\emph{single}} observation.
@@ -547,17 +564,21 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 		\includegraphics[scale=0.3]{Links_Interpolated_Theta.jpg}
 \end{columns}
 \begin{itemize}
-\item 
+\item A good choice for the time horizon seems to be \textcolor{mygreen}{60 minutes}.
+\item<2-> This suggests that the traffic will \textcolor{blue}{forget} it's condition after almost an hour!
 \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Best Parameters}
+\begin{itemize}
+\item We set $\lambda = 0.1$ in SH and $\tau = 60$ in LI:
+\end{itemize}
 \begin{center}
 	\includegraphics[scale=0.5]{Links_Best.jpg}
 \end{center}
 \end{frame}
 
-\begin{frame}\frametitle{Routes \small{(cont'd)}}
+\begin{frame}\frametitle{Routes}
 \vspace{-0.35in}
 \begin{columns}
 	\column{0.5\textwidth}
@@ -593,7 +614,7 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 }
 \end{frame}
 
-\begin{frame}\frametitle{Routes}
+\begin{frame}\frametitle{Routes \small{(cont'd)}}
 \only<1>{
 \begin{center}
 	\includegraphics[scale=0.3]{Approaches_All1.jpg}
@@ -652,8 +673,12 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 }
 \end{frame}
 
-
 \section{Q \& A}
+\begin{frame}\frametitle{Questions}
+\begin{center}
+	\includegraphics[scale=0.3]{QandA.jpg}
+\end{center}
+\end{frame}
 
 
 
