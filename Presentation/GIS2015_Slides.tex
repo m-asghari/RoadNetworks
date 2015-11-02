@@ -3,7 +3,21 @@
 \usepackage{xcolor}
 \usepackage{color}
 \usepackage{colortbl}
+\usepackage{tikz}
 \usetheme{USC}
+
+\tikzset{
+  every overlay node/.style={
+    draw=none,fill=none,rounded corners,anchor=north west,
+  },
+}
+% Usage:
+% \tikzoverlay at (-1cm,-5cm) {content};
+% or
+% \tikzoverlay[text width=5cm] at (-1cm,-5cm) {content};
+\def\tikzoverlay{%
+   \tikz[baseline,overlay]\node[every overlay node]
+}%
 
 \definecolor{mygreen}{RGB}{0, 108, 57}
 
@@ -12,12 +26,21 @@
 \graphicspath{ {../Manuscript/figures/}{Graphics/} }
 
 \title[USC Viterbi School of Engineering]{Probabilistic estimation of link travel times in dynamic road networks}  
-\author[Mohammad Asghari]{Mohammad Asghari\\ \small{masghari@usc.edu}\\ \vspace{0.1in} \tiny{Joint work with Tobias Emrich, Ugur Demiryurek and Cyrus Shahabi}}
+\author[Mohammad Asghari]{Mohammad Asghari\\
+\small{masghari@usc.edu}\\
+\vspace{0.05in}
+\begin{flushleft}
+\tiny{
+\hspace{1.25in}Joint work with\\
+\hspace{1.25in}Tobias Emrich, Director of Data Science Lab at LMU\\
+\hspace{1.25in}Ugur Demiryurek, Associate Director of IMSC\\
+\hspace{1.25in}Cyrus Shahabi, Director of IMSC \& Faculty of CS Department at USC}
+\end{flushleft}}
 
 \date{Nov 6, 2015} 
-
 \begin{frame}
 \titlepage
+\vspace{-0.5in}
 \begin{columns}
   \column{.2\textwidth}
   \begin{center}
@@ -31,7 +54,7 @@
 \end{columns} 
 \end{frame}
 
-\section{Introduction}
+\section*{Introduction}
 \begin{frame}\frametitle{Motivation}
 \vspace{-0.2in}
 \only<1-2>{
@@ -96,18 +119,18 @@
 
 \begin{columns}
 \column{0.7\textwidth}
-\only<2-3>{
+\only<2>{
 \begin{center}
 	\includegraphics[scale=0.33]{route_construction1.jpg}
 \end{center}
 }
-\only<4->{
+\only<3->{
 \begin{center}
 	\includegraphics[scale=0.33]{route_construction2.jpg}
 \end{center}
 }
 \column{0.3\textwidth}
-\only<3->{
+\only<2->{
 \begin{center}
 	\vspace{0.2in}
 	\includegraphics[scale=0.33]{sample_pmf2.jpg}
@@ -122,7 +145,17 @@
 \begin{itemize}
 \item<2-> The end-to-end process of building route \emph{pmfs} from \textbf{real data} will be impossible.
 \item<3-> The accuracy of the \emph{pltts}  \textbf{directly} impacts the accuracy of the route \emph{pmf} in all approaches.
-\item<4-> A \textcolor{mygreen}{\textbf{good}} \textit{pltt} technique applied to a \textcolor{red}{\textbf{bad}} algorithm is \textbf{better} than a \textcolor{red}{\textbf{bad}} \textit{pltt} technique applied to a \textcolor{mygreen}{\textbf{good}} algorithm.
+\only<3>{
+\begin{center}
+	\includegraphics[scale=0.25]{direct_impact.jpg}
+\end{center}
+}
+\item<4-> the accuracy of the \emph{pltt} is the \textbf{dominant} factor in the accuracy of the final route \emph{pmf}.
+\only<4>{
+\begin{center}
+	\includegraphics[scale=0.25]{dominant_impact.jpg}
+\end{center}
+}
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -135,7 +168,8 @@
 \begin{block}{\textit{Probabilistic Link Travel Times \textit{(pltt)}}}
 The probabilistic link travel time of link $(i,j)$, $c_{ij}^t(x)$, is the probability of taking $x$ minutes for a vehicle to traverse link $(i,j)$ starting at time $t$.
 \end{block}
-\only<1>{\begin{columns}
+\only<1>{
+\begin{columns}
 \column{0.5\textwidth}
 \vspace{-0.23in}
 \begin{itemize}
@@ -143,7 +177,47 @@ The probabilistic link travel time of link $(i,j)$, $c_{ij}^t(x)$, is the probab
 \end{itemize}
 \begin{center}
 	\includegraphics[scale=0.35]{link_ij.jpg}\\
-	$c_{ij}^{t_1}(6) = 0.3$ 
+	$c_{ij}^{t}(x)$
+\end{center}
+\column{0.5\textwidth}
+\vspace{-0.23in}
+\begin{center}
+	\includegraphics[scale=0.3]{pltt_ij_t.jpg}
+\end{center}
+\end{columns}
+}
+\only<2>{
+\begin{columns}
+\column{0.5\textwidth}
+\vspace{-0.23in}
+\begin{itemize}
+\item e.g.,
+\end{itemize}
+\begin{center}
+	\includegraphics[scale=0.35]{link_ij.jpg}\\
+	$c_{ij}^{t}(6) = 0.3$
+\end{center}
+\column{0.5\textwidth}
+\vspace{-0.23in}
+\begin{center}
+	\includegraphics[scale=0.3]{pltt_ij_x.jpg}
+\end{center}
+\end{columns}
+\tikzoverlay at (3.8cm,2.4cm) {
+        \includegraphics[scale=0.33]{arrow1.png}
+};
+}
+\only<3>{
+\begin{columns}
+\column{0.5\textwidth}
+\vspace{-0.23in}
+\begin{itemize}
+\item e.g.,
+\end{itemize}
+\begin{center}
+	\includegraphics[scale=0.35]{link_ij.jpg}\\
+	$c_{ij}^{t_1}(6) = 0.3$\\
+	$c_{ij}^{t_2}(6) = 2.5$
 \end{center}
 \column{0.5\textwidth}
 \vspace{-0.23in}
@@ -153,12 +227,12 @@ The probabilistic link travel time of link $(i,j)$, $c_{ij}^t(x)$, is the probab
 \end{columns}
 }
 \vspace{-0.1in}
-\only<2->{
+\only<4->{
 \begin{alertblock}{Route PDF (\textbackslash PMF)}
 If $p_{sd}$ is a path starting at $s$ and ending in $d$, $\pi_{sd}^t$ is the random variable representing the travel time on $p_{sd}$ when we start at time $t$. Accordingly, the route pdf, $J_{sd}^t(x)$, gives the probability of taking $x$ minutes for a vehicle to traverse $p_{sd}$ starting at time $t$
 \end{alertblock}
 }
-\only<2>{\begin{columns}
+\only<4>{\begin{columns}
 \column{0.5\textwidth}
 \vspace{-0.23in}
 \begin{itemize}
@@ -175,16 +249,16 @@ If $p_{sd}$ is a path starting at $s$ and ending in $d$, $\pi_{sd}^t$ is the ran
 \end{center}
 \end{columns}
 }
-\only<3>{
-\begin{center}
-	\includegraphics[scale=0.33]{times1.jpg}
-\end{center}
-}
-\only<4>{
-\begin{center}
-	\includegraphics[scale=0.33]{times2.jpg}
-\end{center}
-}
+%\only<5>{
+%\begin{center}
+%	\includegraphics[scale=0.33]{times1.jpg}
+%\end{center}
+%}
+%\only<5>{
+%\begin{center}
+%	\includegraphics[scale=0.33]{times2.jpg}
+%\end{center}
+%}
 \only<5>{
 \begin{center}
 	\includegraphics[scale=0.33]{times3.jpg}
@@ -222,7 +296,7 @@ We use b-discrete to discretize the time domain into intervals of length $\phi$:
 \end{equation*}
 }
 
-\only<5->{
+\only<4->{
 Then the PMF $F_{ij}$ of link travel time $c_{ij}$ will be:
 \begin{equation*}
 	F_{ij}(b) = \begin{cases}\int_b^{b+\phi}f_{ij}(w)dw \qquad b =
@@ -253,17 +327,14 @@ H^{t_s} \subset H
 }
 \only<2->{
 \begin{exampleblock}{}
-\begin{center}
-At a specific \textbf{time of day}, the traffic follows similar patterns during \textbf{weekdays}.\\
-\end{center}
-\tiny{* B. Pan et. al., \textit{Utilizing real-world transportation data for accurate traffic prediction}.}
+For each start time, $t_s$, we use historic data that are \textbf{temporally} similar to $t_s$. e.g., if $t_s$ is \textbf{8:00AM on Friday Nov 6th}, we use the data from \textbf{8:00AM on every Friday}.
 \end{exampleblock}
 }
 \end{frame}
 
 \begin{frame}\frametitle{Historic Data \small{(cont'd)}}
 \begin{itemize}
-\item Continuous (e.g., Gaussian)
+\item Continuous (e.g., normal)
 \begin{gather*}
 	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h\\ 
 	(\sigma_{ij}^{t_s})^2 = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} (c_{ij}^h-\mu_{ij}^{t_s})^2\\
@@ -311,21 +382,21 @@ At a specific \textbf{time of day}, the traffic follows similar patterns during 
 \end{frame}
 
 \begin{frame}\frametitle{Similar Historic}
+\vspace{-0.1in}
 \only<1>{
 \begin{center}
-	\includegraphics[scale=0.35]{similar_historic2.jpg}
+	\includegraphics[scale=0.35]{similar_historic1.jpg}
 \end{center}
 }
 \only<2>{
 \begin{center}
-	\includegraphics[scale=0.35]{similar_historic3.jpg}
+	\includegraphics[scale=0.35]{similar_historic2.jpg}
 \end{center}
 }
 \only<3->{
 \begin{center}
-	\includegraphics[scale=0.35]{similar_historic4.jpg}
+	\includegraphics[scale=0.35]{similar_historic3.jpg}
 \end{center}
-\vspace{0.75in}
 \begin{equation*}
 H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h-t_p}}{c_{i,j}^{t_q}} \right| \leq \lambda \}  
 \end{equation*}
@@ -482,46 +553,73 @@ DisTimCor & discrete & yes & yes\\ \hline
 %\end{itemize}
 %\end{frame}
 
-\section{Evaluating Probabilistic Predictions}
+\section{Scoring Probabilistic Predictions}
 \frame{\frametitle{Outline}\tableofcontents[currentsection]}
 
-\begin{frame}\frametitle{Evaluation}
+\begin{frame}\frametitle{Scoring Method}
 \begin{itemize}
-\item Goodness of fit
-\only<1>{
-\begin{center}
-	\includegraphics[scale=0.35]{goodness_of_fit.jpg}
-\end{center}
+\item Why do we need a scoring method?
 \begin{itemize}
-\item Does not work well when the number of observations are \textcolor{blue}{\emph{small}}.
+\item<2-> e.g.,
 \end{itemize}
-}
-\item<2-> Scoring Rules
+\end{itemize}
 \only<2>{
 \begin{center}
-	\includegraphics[scale=0.25]{scoring_rules1.jpg}
+	\includegraphics[scale=0.3]{crps1.jpg}
 \end{center}
 }
-\only<3>{
+\only<3->{
 \begin{center}
-	\includegraphics[scale=0.25]{scoring_rules3.jpg}
+	\includegraphics[scale=0.3]{crps2.jpg}
 \end{center}
-\begin{itemize}
-\item Good for \textcolor{blue}{\emph{categorical}} values and not suitable for \textcolor{blue}{\emph{ordinal}} values.
-\end{itemize}
 }
-
-\item<4-> Continuous Ranked Probability Score (CRPS)
-\begin{itemize}
-\item<4-> Can assign a score to a \textcolor{blue}{\emph{single}} observation.
-\item<4-> Suitable for both \textcolor{blue}{\emph{categorical}} and \textcolor{blue}{\emph{ordinal}} values.
-\end{itemize}
 \only<4->{
+\begin{center}
+\begin{block}{}
+We need a scoring method that tells us how \emph{close} the \textbf{predicted model} is to the \textbf{actual} travel time.
+\end{block}
+\end{center}
+}
+\end{frame}
+
+\begin{frame}\frametitle{Scoring Method \small{(cont'd)}}
+\begin{itemize}
+%\item Goodness of fit
+%\only<1>{
+%\begin{center}
+%	\includegraphics[scale=0.35]{goodness_of_fit.jpg}
+%\end{center}
+%\begin{itemize}
+%\item Does not work well when the number of observations are \textcolor{blue}{\emph{small}}.
+%\end{itemize}
+%}
+%\item<2-> Scoring Rules
+%\only<2>{
+%\begin{center}
+%	\includegraphics[scale=0.25]{scoring_rules1.jpg}
+%\end{center}
+%}
+%\only<3>{
+%\begin{center}
+%	\includegraphics[scale=0.25]{scoring_rules3.jpg}
+%\end{center}
+%\begin{itemize}
+%\item Good for \textcolor{blue}{\emph{categorical}} values and not suitable for \textcolor{blue}{\emph{ordinal}} 
+%values.
+%\end{itemize}
+%}
+\item<1-> Continuous Ranked Probability Score (CRPS)
+\begin{itemize}
+\item<1-> Can assign a score to a \textcolor{blue}{\emph{single}} observation.
+\item<1-> Suitable for both \textcolor{blue}{\emph{categorical}} and \textcolor{blue}{\emph{ordinal}} values.
+\end{itemize}
+\only<1->{
 \begin{gather*}
 CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 \geq v^t) dx
 \end{gather*}
 }
+\item<2-> CRPS is a \emph{distance} measure, so the \textbf{lower} the score, the \textbf{better} the prediction.
 \end{itemize}
 \end{frame}
 
@@ -542,21 +640,21 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 
 \begin{frame}\frametitle{Methodology}
 \begin{itemize}
-\item Start Times: 8:00AM, 9:00AM, 4:00PM, 5:00PM, 6:00PM during weekdays in 2013\\
-\only<2->{$\rightarrow 5$ days $\times \ 52$ weeks $ = 260$ sample for each start time.}
+\item Start Times: 8:00AM, 9:00AM, 4:00PM, 5:00PM, 6:00PM during weekdays in the past 3 years\\
+\only<2->{$\rightarrow 5$ days $\times \ 52$ weeks $\times \ 3$ years $ = 780$ sample for each start time.}
 \item<3-> Prediction Times: 5, 10, 15, 30, 60, 90 and 120 minutes
 \item<4-> We use k-fold cross validation (k = 5).
+%\only<4>{
+%\begin{center}
+%	\includegraphics[scale=0.35]{k-fold1.jpg}
+%\end{center}
+%}
 \only<4>{
-\begin{center}
-	\includegraphics[scale=0.35]{k-fold1.jpg}
-\end{center}
-}
-\only<5>{
 \begin{center}
 	\includegraphics[scale=0.35]{k-fold2.jpg}
 \end{center}
 }
-\only<6>{
+\only<5>{
 \begin{center}
 	\includegraphics[scale=0.35]{k-fold3.jpg}
 \end{center}
@@ -565,46 +663,46 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 
 \end{frame}
 
-\begin{frame}\frametitle{Historic}
-\vspace{0.5in}
-\begin{columns}
-	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Historic.jpg}
-	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Historic_TOD.jpg}
-\end{columns}
-\begin{itemize}
-\item Discrete Vs. Continuous \emph{pltts} have almost the same outcome. \textcolor{blue}{We will only consider discrete \emph{pltts} from this point forward.}
-\item Uncertainty during rush hours is higher.
-\end{itemize}
-\end{frame}
+%\begin{frame}\frametitle{Historic}
+%\vspace{0.5in}
+%\begin{columns}
+%	\column{0.5\textwidth}
+%		\includegraphics[scale=0.3]{Links_Historic.jpg}
+%	\column{0.5\textwidth}
+%		\includegraphics[scale=0.3]{Links_Historic_TOD.jpg}
+%\end{columns}
+%\begin{itemize}
+%\item Discrete Vs. Continuous \emph{pltts} have almost the same outcome. \textcolor{blue}{We will only consider discrete \emph{pltts} from this point forward.}
+%\item Uncertainty during rush hours is higher.
+%\end{itemize}
+%\end{frame}
 
-\begin{frame}\frametitle{Similar Historic}
-\begin{center}
-	\includegraphics[scale=0.45]{Links_Filtered.jpg}
-\end{center}
-\begin{itemize}
-\item Small values of $\lambda$ over-fit the model $\implies$ \textcolor{red}{bad predictions}.
-\item Large values of $\lambda$ result in dissimilar training data $\implies$ \textcolor{red}{bad predictions}.
-\item We choose \textcolor{mygreen}{0.1} as the optimal value for $\lambda$.
-\end{itemize}
-\end{frame}
+%\begin{frame}\frametitle{Similar Historic}
+%\begin{center}
+%	\includegraphics[scale=0.45]{Links_Filtered.jpg}
+%\end{center}
+%\begin{itemize}
+%\item Small values of $\lambda$ over-fit the model $\implies$ \textcolor{red}{bad predictions}.
+%\item Large values of $\lambda$ result in dissimilar training data $\implies$ \textcolor{red}{bad predictions}.
+%\item We choose \textcolor{mygreen}{0.1} as the optimal value for $\lambda$.
+%\end{itemize}
+%\end{frame}
 
-\begin{frame}\frametitle{Linear Interpolation}
-\vspace{0.5in}
-\begin{columns}
-	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Interpolated_TimeHorizon.jpg}
-	\column{0.5\textwidth}
-		\includegraphics[scale=0.3]{Links_Interpolated_Theta.jpg}
-\end{columns}
-\begin{itemize}
-\item A good choice for the time horizon seems to be \textcolor{mygreen}{60 minutes}.
-\item<2-> This suggests that the traffic will \textcolor{blue}{forget} it's condition after almost an hour!
-\end{itemize}
-\end{frame}
+%\begin{frame}\frametitle{Linear Interpolation}
+%\vspace{0.5in}
+%\begin{columns}
+%	\column{0.5\textwidth}
+%		\includegraphics[scale=0.3]{Links_Interpolated_TimeHorizon.jpg}
+%	\column{0.5\textwidth}
+%		\includegraphics[scale=0.3]{Links_Interpolated_Theta.jpg}
+%\end{columns}
+%\begin{itemize}
+%\item A good choice for the time horizon seems to be \textcolor{mygreen}{60 minutes}.
+%\item<2-> This suggests that the traffic will \textcolor{blue}{forget} it's condition after almost an hour!
+%\end{itemize}
+%\end{frame}
 
-\begin{frame}\frametitle{Best Parameters}
+\begin{frame}\frametitle{Pltt Computation}
 \begin{itemize}
 \item We set $\lambda = 0.1$ in SH and $\tau = 60$ in LI:
 \end{itemize}
@@ -700,15 +798,15 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 \only<2->{
 \begin{exampleblock}{}
    \begin{center}
-   A \textcolor{mygreen}{\textbf{good}} \textit{pltt} technique applied to a \textcolor{red}{\textbf{bad}} approach\\
+   An \textcolor{mygreen}{\textbf{more accurate}} \textit{pltt} technique applied to a \textcolor{red}{\textbf{less accurate}} approach\\
    is \textbf{better} than\\
-   a \textcolor{red}{\textbf{bad}} \textit{pltt} technique applied to a \textcolor{mygreen}{\textbf{good}} approach.
+   a \textcolor{red}{\textbf{less accurate}} \textit{pltt} technique applied to a \textcolor{mygreen}{\textbf{more accurate}} approach.
    \end{center}
 \end{exampleblock}
 }
 \end{frame}
 
-\section{Q \& A}
+\section*{Q \& A}
 \begin{frame}\frametitle{Questions}
 \begin{center}
 	\includegraphics[scale=0.3]{QandA.jpg}
