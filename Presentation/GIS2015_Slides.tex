@@ -26,8 +26,7 @@
 \graphicspath{ {../Manuscript/figures/}{Graphics/} }
 
 \title[USC Viterbi School of Engineering]{Probabilistic estimation of link travel times in dynamic road networks}  
-\author[Mohammad Asghari]{Mohammad Asghari\\
-\small{masghari@usc.edu}\\
+\author[Mohammad Asghari]{\small{Speaker:}\\Mohammad Asghari\\
 \vspace{0.05in}
 \begin{flushleft}
 \tiny{
@@ -336,7 +335,7 @@ For each start time, $t_s$, we use historic data that are \textbf{temporally} si
 \begin{itemize}
 \item Continuous (e.g., normal)
 \begin{gather*}
-	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{i,j}^h\\ 
+	\mu_{ij}^{t_s} = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} c_{ij}^h\\ 
 	(\sigma_{ij}^{t_s})^2 = \frac{1}{|H^{t_s}|}\sum_{h\in H^{t_s}} (c_{ij}^h-\mu_{ij}^{t_s})^2\\
 \end{gather*}
 \item Discrete
@@ -429,7 +428,7 @@ H_{i,j}^{t_s} = \{h|h \in H^{t_s} \wedge \left| \frac{c_{i,j}^{t_q} - c_{i,j}^{h
 \item<5-> We define $\theta \in \left[ 0, 1 \right]$ as the relative importance of the current situation:
 \only<5->{
 \begin{equation*}
-\theta = min \{\frac{t_p}{\tau}, 1 \}
+\theta = max \{1- \frac{t_p}{\tau}, 0 \}
 \end{equation*}
 }
 \end{itemize}
@@ -765,19 +764,19 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 }
 \only<4>{
 \begin{center}
-	\includegraphics[scale=0.3]{Approaches_All4.jpg}
+	\includegraphics[scale=0.3]{Approaches_All5.jpg}
 \end{center}
 }
 \only<5>{
 \begin{center}
-	\includegraphics[scale=0.3]{Approaches_All5.jpg}
+	\includegraphics[scale=0.3]{Approaches_All4.jpg}
 \end{center}
 }
 \begin{itemize}
 \item<2-> All probabilistic approaches perform considerably better than the non-probabilistic (\textit{Baseline}) approach.
 \item<3-> The choice between Continuous Vs. Discrete pltts don't affect the result.
-\item<4-> Time-dependent approaches improve the results by ~\%10-20.
-\item<5-> Link correlations don't have much influence on the results.
+\item<4-> Link correlations don't have much influence on the results.
+\item<5-> Time-dependent approaches improve the results by ~\%10-20.
 \end{itemize}
 \end{frame}
 
@@ -786,12 +785,12 @@ CRPS(f^t, v^t) = \int_{-\infty}^{+\infty} \int_{-\infty}^{x} f^t(y) dy - I(x
 	\column{0.5\textwidth}
 		\begin{center}
 			\includegraphics[scale=0.3]{Approaches_ConStaInd2.jpg}\\
-			ConStaInd
+			DisStaInd
 		\end{center}
 	\column{0.5\textwidth}
 		\begin{center}
 			\includegraphics[scale=0.3]{Approaches_DisTimInd2.jpg}\\
-			DisStaInd
+			DisTimInd
 		\end{center}
 \end{columns}
 \vspace{0.1in}
